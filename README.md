@@ -1,5 +1,8 @@
 # TinyMaix_STC32G12K128
-It is TinyMaix Port demo for STC32G12K128
+It is TinyMaix Port demo for STC32G12K128   
+
+
+Program Size: data=8.1 edata+hdata=3046 xdata=0 const=4006 code=12133
 
 ```
 mnist demo
