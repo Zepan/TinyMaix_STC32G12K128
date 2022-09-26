@@ -1,0 +1,221 @@
+C251 COMPILER V5.60.0,  tm_model                                                           26/09/22  11:58:46  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE tm_model
+OBJECT MODULE PLACED IN .\Objects\tm_model.obj
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE Sources\TinyMaix\tm_model.c XSMALL HPTR OA FUNCTIONS(REENTRANT) INCDIR
+                    -(.\Sources\User;.\Sources\User\include;.\Sources\FreeRTOS\include;.\Sources\FreeRTOS\portable\STC32G12K128;.\Sources\Tin
+                    -yMaix) PRINT(.\Listings\tm_model.lst) TABS(2) OBJECT(.\Objects\tm_model.obj) 
+
+stmt  level    source
+
+    1          /* Copyright 2022 Sipeed Technology Co., Ltd. All Rights Reserved.
+    2          Licensed under the Apache License, Version 2.0 (the "License");
+    3          you may not use this file except in compliance with the License.
+    4          You may obtain a copy of the License at
+    5              http://www.apache.org/licenses/LICENSE-2.0
+    6          Unless required by applicable law or agreed to in writing, software
+    7          distributed under the License is distributed on an "AS IS" BASIS,
+    8          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    9          See the License for the specific language governing permissions and
+   10          limitations under the License.
+   11          ==============================================================================*/
+   12          #include "tinymaix.h"
+   13          
+   14          // load model
+   15          // mdl: model handle; bin: model bin buf; buf: main buf for middle output; cb:
+   16          // layer callback; in: return input mat, include buf addr; //you can ignore it if
+   17          // use static buf
+   18          
+   19          tm_err_t TM_WEAK tm_load(tm_mdl_t *mdl, const uint8_t *bin, uint8_t *buf,
+   20                                   tm_cb_t cb, tm_mat_t *in) {
+   21   1        char* tmp;
+   22   1        tm_mdlbin_t *mdl_bin = (tm_mdlbin_t *)bin;
+   23   1      
+   24   1        tmp = (char*)mdl_bin;
+   25   1        // if(mdl_bin->magic != TM_MDL_MAGIC)   return TM_ERR_MAGIC;   //FIXME:
+   26   1        // big-endian not compatible
+   27   1        if (mdl_bin->mdl_type != TM_MDL_TYPE)
+   28   1          return TM_ERR_MDLTYPE;
+   29   1        mdl->b = mdl_bin;
+   30   1        mdl->cb = (void *)cb;
+   31   1        if (buf == NULL) {
+   32   2          mdl->buf = (uint8_t *)tm_malloc(mdl->b->buf_size);
+*** WARNING C188 IN LINE 32 OF Sources\TinyMaix\tm_model.c: 'parameter 1': value truncated
+   33   2          if (mdl->buf == NULL)
+   34   2            return TM_ERR_OOM;
+   35   2          mdl->main_alloc = 1;
+   36   2        } else {
+   37   2          mdl->buf = buf;
+   38   2          mdl->main_alloc = 0;
+   39   2        }
+   40   1        if (mdl->b->sub_size > 0) {
+   41   2          mdl->subbuf = (uint8_t *)tm_malloc(mdl->b->sub_size);
+*** WARNING C188 IN LINE 41 OF Sources\TinyMaix\tm_model.c: 'parameter 1': value truncated
+   42   2          if (mdl->subbuf == NULL)
+   43   2            return TM_ERR_OOM;
+   44   2        } else
+   45   1          mdl->subbuf = NULL;
+   46   1        mdl->layer_i = 0;
+   47   1        mdl->layer_body = mdl->b->layers_body;
+   48   1        memcpy((void *)in, (void *)mdl->b->in_dims, sizeof(tm_mat_t));
+   49   1        in->dat = (mtype_t *)mdl->buf; // input at 0 oft
+   50   1        return TM_OK;
+   51   1      }
+   52          
+   53          // remove model
+   54          void TM_WEAK tm_unload(tm_mdl_t *mdl) {
+   55   1        if (mdl->main_alloc)
+C251 COMPILER V5.60.0,  tm_model                                                           26/09/22  11:58:46  PAGE 2   
+
+   56   1          tm_free(mdl->buf);
+   57   1        if (mdl->subbuf)
+   58   1          tm_free(mdl->subbuf);
+   59   1        return;
+   60   1      }
+   61          
+   62          // preprocess dat input
+   63          tm_err_t TM_WEAK tm_preprocess(tm_mdl_t *mdl, tm_pp_t pp_type, tm_mat_t *in,
+   64                                         tm_mat_t *out) {
+   65   1        int i;uint8_t tmp;
+   66   1        tml_head_t *l0h = (tml_head_t *)mdl->b->layers_body;
+   67   1        sctype_t in_s = l0h->in_s;
+   68   1        zptype_t in_zp = l0h->in_zp;
+   69   1        int in_size = in->h * in->w * in->c;
+   70   1        switch (pp_type) {
+   71   2      #if (TM_MDL_TYPE == TM_MDL_INT8) || (TM_MDL_TYPE == TM_MDL_INT16)
+   72   2        case TMPP_FP2INT:
+   73   2          for (i = 0; i < in_size; i++)
+   74   2            out->dat[i] = (mtype_t)(((float *)in->dat)[i] / in_s + in_zp);
+   75   2          break;
+   76   2        case TMPP_UINT2INT:
+   77   2          for (i = 0; i < in_size; i++){
+   78   3            out->dat[i] = ((mtype_t)((((uint8_t *)(in->dat))[i]) - 128))
+   79   3                          << UINT2INT_SHIFT;
+   80   3          }
+   81   2          break;
+   82   2      #else
+                 case TMPP_UINT2FP01:
+                   for (i = 0; i < in_size; i++)
+                     out->dat[i] = (((uint8_t *)(in->dat))[i]) / 255.0;
+                   break;
+                 case TMPP_UINT2FPN11:
+                   for (i = 0; i < in_size; i++)
+                     out->dat[i] = ((((uint8_t *)(in->dat))[i]) - 128) / 128.0;
+                   break;
+               #endif
+   92   2        default: // don't do anything
+   93   2          out->dat = in->dat;
+   94   2          break;
+   95   2        }
+   96   1        return TM_OK;
+   97   1      }
+   98          
+   99          // run model
+  100          // mdl: model handle; in: input mat; out: output mat
+  101          tm_err_t TM_WEAK tm_run(tm_mdl_t *mdl, tm_mat_t *in, tm_mat_t *out) {
+  102   1        int i;
+  103   1        tm_mat_t _in, _out;
+  104   1        tm_err_t res = TM_OK;
+  105   1        int out_idx = 0;
+  106   1        memcpy((void *)&_in, (void *)in, sizeof(tm_mat_t));
+  107   1        mdl->layer_body = mdl->b->layers_body;
+  108   1        for (mdl->layer_i = 0; mdl->layer_i < mdl->b->layer_cnt; mdl->layer_i++) {
+  109   2          tml_head_t *h = (tml_head_t *)(mdl->layer_body);
+  110   2          if (mdl->layer_i > 0) {
+  111   3            _in.dat = (mtype_t *)(mdl->buf + h->in_oft);
+  112   3            memcpy((void *)&_in, (void *)(h->in_dims), sizeof(uint16_t) * 4);
+  113   3          }
+  114   2          _out.dat = (mtype_t *)(mdl->buf + h->out_oft);
+  115   2          memcpy((void *)&_out, (void *)(h->out_dims), sizeof(uint16_t) * 4);
+  116   2          switch (h->type) {
+  117   3          case TML_CONV2D:
+  118   3          case TML_DWCONV2D: {
+  119   4            tml_conv2d_dw_t *l = (tml_conv2d_dw_t *)(mdl->layer_body);
+  120   4            res = tml_conv2d_dwconv2d(
+  121   4                &_in, &_out, (wtype_t *)(mdl->layer_body + l->w_oft),
+C251 COMPILER V5.60.0,  tm_model                                                           26/09/22  11:58:46  PAGE 3   
+
+  122   4                (btype_t *)(mdl->layer_body + l->b_oft), l->kernel_w, l->kernel_h,
+  123   4                l->stride_w, l->stride_h, l->dilation_w, l->dilation_h, l->act,
+  124   4                l->pad[0], l->pad[1], l->pad[2], l->pad[3], (int)l->depth_mul,
+  125   4                (sctype_t *)(mdl->layer_body + l->ws_oft), h->in_s, h->in_zp,
+  126   4                h->out_s, h->out_zp);
+  127   4            break;
+  128   4          }
+  129   3          case TML_GAP: {
+  130   4            tml_gap_t *l = (tml_gap_t *)(mdl->layer_body);
+  131   4            res = tml_gap(&_in, &_out, h->in_s, h->in_zp, h->out_s, h->out_zp);
+  132   4            break;
+  133   4          }
+  134   3          case TML_FC: {
+  135   4            tml_fc_t *l = (tml_fc_t *)(mdl->layer_body);
+  136   4            res = tml_fc(&_in, &_out, (wtype_t *)(mdl->layer_body + l->w_oft),
+  137   4                         (btype_t *)(mdl->layer_body + l->b_oft),
+  138   4                         (sctype_t *)(mdl->layer_body + l->ws_oft), h->in_s, h->in_zp,
+  139   4                         h->out_s, h->out_zp);
+  140   4            break;
+  141   4          }
+  142   3          case TML_SOFTMAX: {
+  143   4            tml_softmax_t *l = (tml_softmax_t *)(mdl->layer_body);
+  144   4            res = tml_softmax(&_in, &_out, h->in_s, h->in_zp, h->out_s, h->out_zp);
+  145   4            break;
+  146   4          }
+  147   3          case TML_RESHAPE: {
+  148   4            tml_reshape_t *l = (tml_reshape_t *)(mdl->layer_body);
+  149   4            res = tml_reshape(&_in, &_out, h->in_s, h->in_zp, h->out_s, h->out_zp);
+  150   4            break;
+  151   4          }
+  152   3          default:
+  153   3            res = TM_ERR_LAYERTYPE;
+  154   3            break;
+  155   3          }
+  156   2          if (res != TM_OK)
+  157   2            return res;
+  158   2          if (mdl->cb)
+  159   2            ((tm_cb_t)mdl->cb)(mdl, h); // layer callback
+  160   2          if (h->is_out) {
+  161   3            memcpy((void *)(&out[out_idx]), (void *)(&(h->out_dims)),
+  162   3                   sizeof(uint16_t) * 4);
+  163   3            if (mdl->b->out_deq == 0 ||
+  164   3                TM_MDL_TYPE == TM_MDL_FP32) // fp32 do not need deq
+  165   3              out[out_idx].dat = (mtype_t *)(TML_GET_OUTPUT(mdl, h));
+  166   3            else {
+  167   4              int out_size = h->out_dims[1] * h->out_dims[2] * h->out_dims[3];
+  168   4              float *outf = (float *)(TM_ALIGN(TML_GET_OUTPUT(mdl, h) + out_size));
+  169   4              for (i = 0; i < out_size; i++) // do dequant
+  170   4                outf[i] = TML_DEQUANT(h, (TML_GET_OUTPUT(mdl, h))[i]);
+  171   4              out[out_idx].dat = (uint8_t *)outf;
+  172   4            }
+  173   3            out_idx += 1;
+  174   3          }
+  175   2          mdl->layer_body += (h->sizes);
+  176   2        }
+  177   1        return TM_OK;
+  178   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      2039     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+C251 COMPILER V5.60.0,  tm_model                                                           26/09/22  11:58:46  PAGE 4   
+
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

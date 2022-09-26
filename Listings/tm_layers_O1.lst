@@ -1,0 +1,230 @@
+C251 COMPILER V5.60.0,  tm_layers_O1                                                       21/09/22  23:18:45  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE tm_layers_O1
+OBJECT MODULE PLACED IN .\Objects\tm_layers_O1.obj
+COMPILER INVOKED BY: D:\SDK\Keil_V5\C251\BIN\C251.EXE Sources\TinyMaix\tm_layers_O1.c XSMALL OA FUNCTIONS(REENTRANT) INC
+                    -DIR(.\Sources\User;.\Sources\User\include;.\Sources\FreeRTOS\include;.\Sources\FreeRTOS\portable\STC32G12K128;.\Sources\
+                    -TinyMaix) PRINT(.\Listings\tm_layers_O1.lst) TABS(2) OBJECT(.\Objects\tm_layers_O1.obj) 
+
+stmt  level    source
+
+    1          /* Copyright 2022 Sipeed Technology Co., Ltd. All Rights Reserved.
+    2          Licensed under the Apache License, Version 2.0 (the "License");
+    3          you may not use this file except in compliance with the License.
+    4          You may obtain a copy of the License at
+    5              http://www.apache.org/licenses/LICENSE-2.0
+    6          Unless required by applicable law or agreed to in writing, software
+    7          distributed under the License is distributed on an "AS IS" BASIS,
+    8          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    9          See the License for the specific language governing permissions and
+   10          limitations under the License.
+   11          ==============================================================================*/
+   12          // It is O1 implement
+   13          // warning: O1 code bloat much to get better performance, experimental now
+   14          /*
+   15          pwconv
+   16          dwconv
+   17              3x3：tm_dot_prod_gap_3x3x1
+   18              none 3x3:
+   19          mdwconv
+   20          conv
+   21          */
+   22          
+   23          #include "float.h"
+   24          #include "math.h"
+   25          #include "tinymaix.h"
+   26          
+   27          #if TM_OPT_LEVEL == TM_OPT1
+   28          #include "arch_cpu.h"
+   29          
+   30          #define BATCH_SIZE 1 // batch sum size
+   31          /*************************** TML_CONV2D **********************************/
+   32          static uint32_t k_oft[TM_MAX_KSIZE];
+   33          static mtype_t sbuf[TM_MAX_KCSIZE];
+   34          #if (TM_MDL_TYPE == TM_MDL_FP32) || (TM_MDL_TYPE == TM_MDL_FP16)
+               #define SUMSCALE (1.0)
+               static sctype_t outscale;
+               TM_INLINE void l_postprocess_sum(sumtype_t sum, btype_t b, int act,
+                                                mtype_t *outp, sctype_t scale, sctype_t out_s,
+                                                zptype_t out_zp) {
+                 sum += b;
+                 switch (act) { // activation func
+                 case TM_ACT_RELU:
+                 case TM_ACT_RELU6: // treat relu6 as relu in float mode //speed up
+                   sum = sum > 0 ? sum : 0;
+                   break;
+                 default:
+                   break;
+                 }
+                 *outp = (mtype_t)sum;
+                 return;
+               }
+               
+               #elif (TM_MDL_TYPE == TM_MDL_INT8) || (TM_MDL_TYPE == TM_MDL_INT16)
+   54          
+   55          #if TM_FASTSCALE
+               static int32_t sumscale[TM_MAX_CSIZE];
+               static int32_t outscale;
+C251 COMPILER V5.60.0,  tm_layers_O1                                                       21/09/22  23:18:45  PAGE 2   
+
+               #else
+   59          static float sumscale[TM_MAX_CSIZE];
+   60          static sctype_t outscale;
+   61          #endif
+   62          #define SUMSCALE (sumscale[c])
+   63          
+   64          #if !TM_FASTSCALE
+   65          TM_INLINE void l_postprocess_sum(sumtype_t sum, btype_t b, int act,
+   66                                           mtype_t *outp, sctype_t scale, sctype_t out_s,
+   67                                           zptype_t out_zp)
+   68          #else
+               TM_INLINE void l_postprocess_sum(sumtype_t sum, btype_t b, int act,
+                                                mtype_t *outp, int32_t scale, int32_t out_s,
+                                                zptype_t out_zp)
+               #endif
+   73          {
+   74   1      #if !TM_FASTSCALE
+   75   1        float sumf = (sum + b) * scale;
+   76   1        sum += b;
+   77   1      #else
+                 sumtype_t sumf = (sum << TM_FASTSCALE_SHIFT) / scale;
+               #endif
+   80   1        switch (act) { // activation func
+   81   2        case TM_ACT_RELU:
+   82   2          sumf = sumf > 0 ? sumf : 0;
+   83   2          break;
+   84   2        case TM_ACT_RELU6:
+   85   2          sumf = sumf > 0 ? sumf : 0;
+   86   2      #if (!TM_FASTSCALE)
+   87   2          sumf = sumf > 6 ? 6 : sumf;
+   88   2      #else
+                   sumf = sumf > (6 << TM_FASTSCALE_SHIFT) ? (6 << TM_FASTSCALE_SHIFT) : sumf;
+               #endif
+   91   2          break;
+   92   2        default:
+   93   2          break;
+   94   2        }
+   95   1      #if !TM_FASTSCALE
+   96   1        *outp = (mtype_t)(sumf / out_s +
+   97   1                          out_zp); //(mtype_t)((int)(sumf/out_s) + out_zp)
+   98   1                                   ////(mtype_t)((int)(sumf/out_s +0.5) + out_zp)
+   99   1      #else
+                 *outp = (mtype_t)(
+                     ((sumf * out_s) >> (TM_FASTSCALE_SHIFT + TM_FASTSCALE_SHIFT)) + out_zp);
+               #endif
+  103   1        return;
+  104   1      }
+  105          #endif
+  106          
+  107          // 1x1 pw conv
+  108          TM_INLINE tm_err_t l_tml_pwconv2d(tm_mat_t *in, tm_mat_t *out, wtype_t *w,
+  109                                            btype_t *b, int kw, int kh, int sx, int sy,
+  110                                            int dx, int dy, int act, int pad_top,
+  111                                            int pad_bottom, int pad_left, int pad_right,
+  112                                            int dmul, sctype_t *ws, sctype_t in_s,
+  113                                            zptype_t in_zp, sctype_t out_s,
+  114                                            zptype_t out_zp) {
+  115   1        int pad_flag =
+  116   1            (pad_top != 0 || pad_bottom != 0 || pad_left != 0 || pad_right != 0);
+  117   1        int maxk = kw * kh;
+  118   1        int chi = in->c;
+  119   1        int cho = out->c;
+  120   1        sumtype_t sum;
+  121   1        mtype_t *outp = out->dat;
+  122   1        sumtype_t sums[BATCH_SIZE];
+  123   1      
+C251 COMPILER V5.60.0,  tm_layers_O1                                                       21/09/22  23:18:45  PAGE 3   
+
+  124   1        for (int y = 0; y < out->h; y++) {
+*** ERROR C25 IN LINE 124 OF Sources\TinyMaix\tm_layers_O1.c: syntax error near 'int'
+*** ERROR C67 IN LINE 124 OF Sources\TinyMaix\tm_layers_O1.c: 'y': undefined identifier
+*** ERROR C67 IN LINE 124 OF Sources\TinyMaix\tm_layers_O1.c: 'y': undefined identifier
+  125   2          for (int x = 0; x < out->w; x++) {
+*** ERROR C25 IN LINE 125 OF Sources\TinyMaix\tm_layers_O1.c: syntax error near 'int'
+*** ERROR C67 IN LINE 125 OF Sources\TinyMaix\tm_layers_O1.c: 'x': undefined identifier
+*** ERROR C67 IN LINE 125 OF Sources\TinyMaix\tm_layers_O1.c: 'x': undefined identifier
+  126   3            mtype_t *sptr = (mtype_t *)TM_MATP(in, sy * y, sx * x, 0);
+*** ERROR C67 IN LINE 126 OF Sources\TinyMaix\tm_layers_O1.c: 'y': undefined identifier
+*** ERROR C67 IN LINE 126 OF Sources\TinyMaix\tm_layers_O1.c: 'x': undefined identifier
+  127   3            wtype_t *kptr = (wtype_t *)w;
+  128   3      
+  129   3            int c = 0;
+  130   3            for (; c < out->c - BATCH_SIZE + 1;) {
+  131   4              tm_dot_prod_pack2(sptr, kptr, chi, sums);
+  132   4              l_postprocess_sum(sums[0], b[c], act, outp, SUMSCALE, outscale, out_zp);
+  133   4              c++;
+  134   4              outp++;
+  135   4              l_postprocess_sum(sums[1], b[c], act, outp, SUMSCALE, outscale, out_zp);
+  136   4              c++;
+  137   4              outp++;
+  138   4              kptr += chi * BATCH_SIZE; //*2;
+  139   4            }
+  140   3            for (; c < out->c; c++) {
+  141   4              tm_dot_prod(sptr, kptr, chi, &sum); // size=maxk*chi //pw maxk==1
+  142   4              l_postprocess_sum(sum, b[c], act, outp, SUMSCALE, outscale, out_zp);
+  143   4              outp++;
+  144   4              kptr += chi;
+  145   4            }
+  146   3          }
+  147   2        }
+  148   1        return TM_OK;
+  149   1      }
+*** WARNING C47 IN LINE 110 OF Sources\TinyMaix\tm_layers_O1.c: 'dx': unreferenced parameter
+*** WARNING C47 IN LINE 110 OF Sources\TinyMaix\tm_layers_O1.c: 'dy': unreferenced parameter
+*** WARNING C47 IN LINE 112 OF Sources\TinyMaix\tm_layers_O1.c: 'dmul': unreferenced parameter
+*** WARNING C47 IN LINE 112 OF Sources\TinyMaix\tm_layers_O1.c: 'ws': unreferenced parameter
+*** WARNING C47 IN LINE 112 OF Sources\TinyMaix\tm_layers_O1.c: 'in_s': unreferenced parameter
+*** WARNING C47 IN LINE 113 OF Sources\TinyMaix\tm_layers_O1.c: 'in_zp': unreferenced parameter
+*** WARNING C47 IN LINE 113 OF Sources\TinyMaix\tm_layers_O1.c: 'out_s': unreferenced parameter
+  150          
+  151          // normal conv
+  152          TM_INLINE tm_err_t l_tml_conv2d(tm_mat_t *in, tm_mat_t *out, wtype_t *w,
+  153                                          btype_t *b, int kw, int kh, int sx, int sy,
+  154                                          int dx, int dy, int act, int pad_top,
+  155                                          int pad_bottom, int pad_left, int pad_right,
+  156                                          int dmul, sctype_t *ws, sctype_t in_s,
+  157                                          zptype_t in_zp, sctype_t out_s,
+  158                                          zptype_t out_zp) {
+  159   1        int pad_flag =
+  160   1            (pad_top != 0 || pad_bottom != 0 || pad_left != 0 || pad_right != 0);
+  161   1        int maxk = kw * kh;
+  162   1        int chi = in->c;
+  163   1        int cho = out->c;
+  164   1        sumtype_t sum;
+  165   1        mtype_t *outp = out->dat;
+  166   1      
+  167   1        int oft = 0;
+  168   1        int idx = 0;
+  169   1        for (int y = 0; y < kh; y++) { // gen k_oft table
+*** ERROR C25 IN LINE 169 OF Sources\TinyMaix\tm_layers_O1.c: syntax error near 'int'
+*** ERROR C67 IN LINE 169 OF Sources\TinyMaix\tm_layers_O1.c: 'y': undefined identifier
+*** ERROR C67 IN LINE 169 OF Sources\TinyMaix\tm_layers_O1.c: 'y': undefined identifier
+  170   2          for (int x = 0; x < kw; x++) {
+*** ERROR C25 IN LINE 170 OF Sources\TinyMaix\tm_layers_O1.c: syntax error near 'int'
+C251 COMPILER V5.60.0,  tm_layers_O1                                                       21/09/22  23:18:45  PAGE 4   
+
+*** ERROR C67 IN LINE 170 OF Sources\TinyMaix\tm_layers_O1.c: 'x': undefined identifier
+*** ERROR C67 IN LINE 170 OF Sources\TinyMaix\tm_layers_O1.c: 'x': undefined identifier
+  171   3            k_oft[idx] = oft;
+  172   3            idx += 1;
+  173   3            oft += chi;
+  174   3          }
+  175   2          oft += (in->w - kw) * chi;
+  176   2        }
+  177   1        int slow_flag = 0; // same pad part is slow
+*** ERROR C25 IN LINE 177 OF Sources\TinyMaix\tm_layers_O1.c: syntax error near 'int'
+  178   1      
+  179   1        for (int y = 0; y < out->h; y++) {
+*** ERROR C25 IN LINE 179 OF Sources\TinyMaix\tm_layers_O1.c: syntax error near 'for'
+*** ERROR C25 IN LINE 179 OF Sources\TinyMaix\tm_layers_O1.c: syntax error near 'int'
+*** ERROR C25 IN LINE 179 OF Sources\TinyMaix\tm_layers_O1.c: syntax error near '<'
+*** ERROR C25 IN LINE 179 OF Sources\TinyMaix\tm_layers_O1.c: syntax error near '->'
+*** WARNING C34 IN LINE 179 OF Sources\TinyMaix\tm_layers_O1.c: 'h': missing declaration specifiers
+*** ERROR C25 IN LINE 179 OF Sources\TinyMaix\tm_layers_O1.c: syntax error near '++'
+  180   1          int src_y0 = sy * y - pad_top;
+  181   1          for (int x = 0; x < out->w; x++) {
+*** ERROR C25 IN LINE 181 OF Sources\TinyMaix\tm_layers_O1.c: syntax error near 'for'
+*** ERROR C7 IN LINE 181 OF Sources\TinyMaix\tm_layers_O1.c: compilation aborted
+
+C251 COMPILATION COMPLETE.  8 WARNING(S),  22 ERROR(S)

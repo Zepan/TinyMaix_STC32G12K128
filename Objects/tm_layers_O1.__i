@@ -1,0 +1,1 @@
+"Sources\TinyMaix\tm_layers_O1.c" XSMALL OA FUNCTIONS (REENTRANT) INCDIR(.\Sources\User;.\Sources\User\include;.\Sources\FreeRTOS\include;.\Sources\FreeRTOS\portable\STC32G12K128;.\Sources\TinyMaix) PRINT(.\Listings\tm_layers_O1.lst) TABS (2) OBJECT(.\Objects\tm_layers_O1.obj)

@@ -1,0 +1,1374 @@
+L251 LINKER/LOCATER V4.66.93.0                                                          09/26/2022  12:01:19  PAGE 1
+
+
+L251 LINKER/LOCATER V4.66.93.0, INVOKED BY:
+D:\KEIL_V5\C251\BIN\L251.EXE .\Objects\putchar.obj, .\Objects\main.obj, .\Objects\tm_layers.obj, .\Objects\tm_model.obj,
+>>  .\Objects\tm_stat.obj TO .\Objects\TinyMaix PRINT (.\Listings\TinyMaix.map) CASE DISABLEWARNING (16, 57) REMOVEUNUSE
+>> D CLASSES (EDATA (0X0-0XFFF), HDATA (0X0-0XFFF), HCONST (0XFE0000-0XFFFFFF), ECODE (0XFE0000-0XFFFFFF))
+
+
+CPU MODE:     251 SOURCE MODE
+INTR FRAME:   4 BYTES SAVED ON INTERRUPT
+MEMORY MODEL: XSMALL [HUGE PTR] WITH FLOATING POINT ARITHMETIC
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\putchar.obj (putchar)
+         COMMENT TYPE 0: C251 V5.60.0
+  .\Objects\main.obj (main)
+         COMMENT TYPE 0: C251 V5.60.0
+  .\Objects\tm_layers.obj (tm_layers)
+         COMMENT TYPE 0: C251 V5.60.0
+  .\Objects\tm_model.obj (tm_model)
+         COMMENT TYPE 0: C251 V5.60.0
+  .\Objects\tm_stat.obj (tm_stat)
+         COMMENT TYPE 0: C251 V5.60.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (?C?FPADD)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (?C?FPMUL)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (?C?FPDIV)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (?C?FPCMP)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (?C?FCAST)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (?C?CASTF)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (PRINTF)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (EXP?_)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (?C?FPGETOPN)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (?C?PRNFMT)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (?C?FPSERIES)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (?C?FPCONVERT)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SFPXSH.LIB (?C?FTNPWR)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (?C_START)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (?C?INITEDATA)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (?C?SIDIV)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (?C?LMUL)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (?C?LIMUL)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (?C?ULDIV)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (?C?SLDIV)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (?C?BMOVENP)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (memcpy)
+         COMMENT TYPE 0: C251 V5.58.7
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 2
+
+
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (memset)
+         COMMENT TYPE 0: C251 V5.58.7
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (malloc)
+         COMMENT TYPE 0: C251 V5.58.7
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (free)
+         COMMENT TYPE 0: C251 V5.58.7
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (?C?INITEDATA_END)
+         COMMENT TYPE 0: A251 V4.69.6.0
+  D:\KEIL_V5\C251\LIB\C2SXSH.LIB (mdefine)
+         COMMENT TYPE 0: C251 V5.58.7
+
+
+ACTIVE MEMORY CLASSES OF MODULE:  .\Objects\TinyMaix (putchar)
+
+BASE        START       END         USED      MEMORY CLASS
+==========================================================
+000000H     000000H     000FFFH     000BE2H   EDATA
+000000H     000000H     000FFFH     000004H   HDATA
+000000H     FE0000H     FFFFFFH     000FA2H   HCONST
+000000H     FE0000H     FFFFFFH               ECODE
+FF0000H     FF0000H     FFFFFFH     002F62H   CODE
+000020H.0   000020H.0   00002FH.7   000000H.1 BIT
+FF0000H     FF0000H     FFFFFFH     000004H   CONST
+000000H     000000H     00007FH     000008H   DATA
+
+
+MEMORY MAP OF MODULE:  .\Objects\TinyMaix (putchar)
+
+
+START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
+=========================================================================
+000000H   000007H   000008H   ---    AT..     DATA           "REG BANK 0"
+000008H   00001FH   000018H   BYTE   UNIT     EDATA          ?ED?TM_STAT
+000020H.0 000020H.0 000000H.1 BIT    UNIT     BIT            ?BI?MAIN
+000020H.1 000020H   000000H.7 ---    ---      **GAP**
+000021H   0008FEH   0008DEH   BYTE   UNIT     EDATA          ?ED?MAIN
+0008FFH   000AC2H   0001C4H   BYTE   UNIT     EDATA          ?ED?TM_LAYERS
+000AC3H   000AEAH   000028H   BYTE   UNIT     EDATA          _EDATA_GROUP_
+000AEBH   000BEAH   000100H   BYTE   UNIT     EDATA          ?STACK
+000BEBH   000BEEH   000004H   BYTE   INSEG    HDATA          ?FD?MDEFINE
+000BEFH   FDFFFFH   FDF411H   ---    ---      **GAP**
+FE0000H   FE0A1BH   000A1CH   BYTE   UNIT     HCONST         ?HC?MAIN
+FE0A1CH   FE0D55H   00033AH   BYTE   UNIT     HCONST         ?C_INITEDATA
+FE0D56H   FE0FA1H   00024CH   BYTE   UNIT     HCONST         ?HC?TM_STAT
+FE0FA2H   FEFFFFH   00F05EH   ---    ---      **GAP**
+FF0000H   FF0002H   000003H   ---    OFFS..   CODE           ?CO?start251?4
+FF0003H   FF0006H   000004H   BYTE   UNIT     CONST          ?CO?PRINTF
+FF0007H   FF0009H   000003H   BYTE   INSEG    CODE           ?PR?TML_RESHAPE?_?TM_LAYERS
+FF000AH   FF000AH   000001H   ---    ---      **GAP**
+FF000BH   FF000DH   000003H   ---    OFFS..   CODE           ?PR?IV?1
+FF000EH   FF0019H   00000CH   BYTE   INSEG    CODE           ?PR?PUTCHAR?PUTCHAR
+FF001AH   FF0022H   000009H   ---    ---      **GAP**
+FF0023H   FF0025H   000003H   ---    OFFS..   CODE           ?PR?IV?4
+FF0026H   FF0AAEH   000A89H   BYTE   UNIT     CODE           ?C?LIB_CODE
+FF0AAFH   FF0B99H   0000EBH   BYTE   INSEG    CODE           ?PR?FREE?FREE
+FF0B9AH   FF0BF4H   00005BH   BYTE   INSEG    CODE           ?PR?MALLOC?MALLOC
+FF0BF5H   FF0C07H   000013H   BYTE   UNIT     CODE           ?C_C51STARTUP
+FF0C08H   FF0C30H   000029H   BYTE   UNIT     CODE           ?C_C51STARTUP?2
+FF0C31H   FF0C33H   000003H   BYTE   UNIT     CODE           ?C_C51STARTUP?3
+FF0C34H   FF0C58H   000025H   BYTE   INSEG    CODE           ?PR?MEMCPY?_?MEMCPY
+FF0C59H   FF0C72H   00001AH   BYTE   INSEG    CODE           ?PR?MEMSET?_?MEMSET
+FF0C73H   FF0C99H   000027H   BYTE   INSEG    CODE           ?PR?TIMER0_INT?_?MAIN
+FF0C9AH   FF0E4BH   0001B2H   BYTE   INSEG    CODE           ?PR?MAIN?MAIN
+FF0E4CH   FF0E68H   00001DH   BYTE   INSEG    CODE           ?PR?TIMER0_INIT?_?MAIN
+FF0E69H   FF0E86H   00001EH   BYTE   INSEG    CODE           ?PR?UARTINIT?_?MAIN
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 3
+
+
+FF0E87H   FF0EAFH   000029H   BYTE   INSEG    CODE           ?PR?TM_UNLOAD?_?TM_MODEL
+FF0EB0H   FF0F16H   000067H   BYTE   INSEG    CODE           ?PR?PARSE_OUTPUT?_?MAIN
+FF0F17H   FF0F21H   00000BH   BYTE   INSEG    CODE           ?PR?UARTSEND?_?MAIN
+FF0F22H   FF0FE0H   0000BFH   BYTE   INSEG    CODE           ?PR?LAYER_CB?_?MAIN
+FF0FE1H   FF1013H   000033H   BYTE   INSEG    CODE           ?PR?UARTISR?_?MAIN
+FF1014H   FF1A51H   000A3EH   BYTE   INSEG    CODE           ?PR?TML_CONV2D_DWCONV2D?_?TM_LAYERS
+FF1A52H   FF1ADAH   000089H   BYTE   INSEG    CODE           ?PR?L_POSTPROCESS_SUM?_?TM_LAYERS
+FF1ADBH   FF1BABH   0000D1H   BYTE   INSEG    CODE           ?PR?TM_DOT_PROD_3X3X1?_?TM_LAYERS
+FF1BACH   FF1D06H   00015BH   BYTE   INSEG    CODE           ?PR?TM_DOT_PROD?_?TM_LAYERS
+FF1D07H   FF1E23H   00011DH   BYTE   INSEG    CODE           ?PR?TML_FC?_?TM_LAYERS
+FF1E24H   FF206FH   00024CH   BYTE   INSEG    CODE           ?PR?TML_SOFTMAX?_?TM_LAYERS
+FF2070H   FF22E8H   000279H   BYTE   INSEG    CODE           ?PR?TM_DOT_PROD_PACK2?_?TM_LAYERS
+FF22E9H   FF23DAH   0000F2H   BYTE   INSEG    CODE           ?PR?TML_GAP?_?TM_LAYERS
+FF23DBH   FF24E0H   000106H   BYTE   INSEG    CODE           ?PR?TM_PREPROCESS?_?TM_MODEL
+FF24E1H   FF2A60H   000580H   BYTE   INSEG    CODE           ?PR?TM_RUN?_?TM_MODEL
+FF2A61H   FF2B63H   000103H   BYTE   INSEG    CODE           ?PR?TM_LOAD?_?TM_MODEL
+FF2B64H   FF2F6FH   00040CH   BYTE   INSEG    CODE           ?PR?TM_STAT?_?TM_STAT
+
+* * * * * * * * *   R E M O V E D     S E G M E N T S   * * * * * * * *
+   *DEL*:           000016H   BYTE   INSEG    CODE           ?PR?DELAY_MS?_?MAIN
+   *DEL*:           000016H   BYTE   INSEG    CODE           ?PR?UARTSENDSTR?_?MAIN
+   *DEL*:           00012AH   BYTE   INSEG    CODE           ?PR?TM_DOT_PROD_GAP_3X3X1?_?TM_LAYERS
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\TinyMaix (putchar)
+
+
+FUNCTION/MODULE                        EDATA_GROUP
+--> CALLED FUNCTION/MODULE             START  STOP
+==================================================
+timer0_int?_/main                      ----- -----
+  +--> ?C?ULIDIV/?C?ULDIV
+
+?C?ULIDIV/?C?ULDIV                     ----- -----
+
+*** NEW ROOT *************************
+
+UartIsr?_/main                         ----- -----
+
+*** NEW ROOT *************************
+
+?C_C51STARTUP                          ----- -----
+
+*** NEW ROOT *************************
+
+?C_C51STARTUP?3                        ----- -----
+  +--> main/main
+
+main/main                              ----- -----
+  +--> UartInit?_/main
+  +--> Timer0_init?_/main
+  +--> PRINTF/PRINTF
+  +--> tm_stat?_/tm_stat
+  +--> layer_cb?_/main
+  +--> tm_load?_/tm_model
+  +--> tm_preprocess?_/tm_model
+  +--> tm_run?_/tm_model
+  +--> parse_output?_/main
+  +--> tm_unload?_/tm_model
+
+UartInit?_/main                        ----- -----
+
+Timer0_init?_/main                     ----- -----
+
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 4
+
+
+PRINTF/PRINTF                          0AC3H 0AEAH
+  +--> OUT/PRINTF
+
+OUT/PRINTF                             ----- -----
+  +--> PUTCH/PRINTF
+
+PUTCH/PRINTF                           ----- -----
+  +--> putchar/putchar
+  +--> OUT/PRINTF
+
+putchar/putchar                        ----- -----
+  +--> UartSend?_/main
+
+UartSend?_/main                        ----- -----
+
+tm_stat?_/tm_stat                      ----- -----
+  +--> PRINTF/PRINTF
+
+layer_cb?_/main                        ----- -----
+  +--> PRINTF/PRINTF
+
+tm_load?_/tm_model                     ----- -----
+  +--> malloc/malloc
+  +--> memcpy?_/memcpy
+
+malloc/malloc                          ----- -----
+
+memcpy?_/memcpy                        ----- -----
+
+tm_preprocess?_/tm_model               ----- -----
+
+tm_run?_/tm_model                      ----- -----
+  +--> memcpy?_/memcpy
+  +--> tml_conv2d_dwconv2d?_/tm_layers
+  +--> tml_gap?_/tm_layers
+  +--> tml_fc?_/tm_layers
+  +--> tml_softmax?_/tm_layers
+  +--> tml_reshape?_/tm_layers
+
+tml_conv2d_dwconv2d?_/tm_layers        ----- -----
+  +--> tm_dot_prod_pack2?_/tm_layers
+  +--> l_postprocess_sum?_/tm_layers
+  +--> tm_dot_prod?_/tm_layers
+  +--> memset?_/memset
+  +--> tm_dot_prod_3x3x1?_/tm_layers
+
+tm_dot_prod_pack2?_/tm_layers          ----- -----
+
+l_postprocess_sum?_/tm_layers          ----- -----
+
+tm_dot_prod?_/tm_layers                ----- -----
+
+memset?_/memset                        ----- -----
+
+tm_dot_prod_3x3x1?_/tm_layers          ----- -----
+
+tml_gap?_/tm_layers                    ----- -----
+  +--> ?C?SLDIV/?C?SLDIV
+
+?C?SLDIV/?C?SLDIV                      ----- -----
+  +--> ?C?ULIDIV/?C?ULDIV
+
+tml_fc?_/tm_layers                     ----- -----
+  +--> tm_dot_prod?_/tm_layers
+
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 5
+
+
+tml_softmax?_/tm_layers                ----- -----
+
+tml_reshape?_/tm_layers                ----- -----
+
+parse_output?_/main                    ----- -----
+  +--> PRINTF/PRINTF
+
+tm_unload?_/tm_model                   ----- -----
+  +--> free/free
+
+free/free                              ----- -----
+
+*** NEW ROOT *************************
+
+?C_C51STARTUP?2                        ----- -----
+
+
+
+PUBLIC SYMBOLS OF MODULE:  .\Objects\TinyMaix (putchar)
+
+
+      VALUE       CLASS    TYPE      PUBLIC SYMBOL NAME
+      =================================================
+      00FF0A8CH   CODE     ---       ?C?BMOVENP
+      00FF0A8AH   CODE     ---       ?C?BMOVENP8
+      00FF0288H   CODE     NEAR LAB  ?C?CASTF
+      000000FFH   NUMBER   ---       ?C?CODESEG
+      00FF0255H   CODE     NEAR LAB  ?C?FCASTC
+      00FF0250H   CODE     NEAR LAB  ?C?FCASTI
+      00FF024BH   CODE     NEAR LAB  ?C?FCASTL
+      00FF081AH   CODE     ---       ?C?FP2SERIES
+      00FF002CH   CODE     ---       ?C?FPADD
+      00FF0207H   CODE     ---       ?C?FPCMP
+      00FF0205H   CODE     ---       ?C?FPCMP3
+      00FF0855H   CODE     ---       ?C?FPCONVERT
+      00FF0184H   CODE     ---       ?C?FPDIV
+      00FF038DH   CODE     ---       ?C?FPGETOPN2
+      00FF00E4H   CODE     ---       ?C?FPMUL
+      00FF03CAH   CODE     ---       ?C?FPNANRESULT
+      00FF03D2H   CODE     ---       ?C?FPOVERFLOW
+      00FF03A6H   CODE     ---       ?C?FPRESULT
+      00FF03BCH   CODE     ---       ?C?FPRESULT2
+      00FF090DH   CODE     ---       ?C?FPROUND
+      00FF0823H   CODE     ---       ?C?FPSERIES
+      00FF0029H   CODE     ---       ?C?FPSUB
+      00FF03CFH   CODE     ---       ?C?FPUNDERFLOW
+      00FF0980H   CODE     ---       ?C?FTNPWR
+      00FF0C08H   CODE     ---       ?C?INITEDATA
+      00FE0D54H   HCONST   WORD      ?C?INITEDATA_END
+      00FF09FAH   CODE     ---       ?C?LIMUL
+      00FF09E9H   CODE     ---       ?C?LMUL
+      00FF040BH   CODE     ---       ?C?PRNFMT
+      00FF09B7H   CODE     ---       ?C?SIDIV
+      00FF0A56H   CODE     NEAR LAB  ?C?SLDIV
+      00FF0000H   CODE     ---       ?C?STARTUP
+      00FF0A05H   CODE     NEAR LAB  ?C?ULDIV
+      00FF0A03H   CODE     NEAR LAB  ?C?ULIDIV
+      00000001H   NUMBER   ---       ?C?XDATASEG
+      00FF0000H   CODE     ---       ?C_STARTUP
+      00000AEBH   EDATA    ---       ?printf?BYTE
+      00000BEBH   HDATA    ---       __mp__
+*SFR* 000000BCH   DATA     BYTE      ADC_CONTR
+*SFR* 000000DEH   DATA     BYTE      ADCCFG
+*SFR* 000000EFH   DATA     BYTE      AUXINTIF
+*SFR* 0000008EH   DATA     BYTE      AUXR
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 6
+
+
+*SFR* 00000097H   DATA     BYTE      AUXR2
+      000008EFH   EDATA    ---       buffer
+      00000020H.0 BIT      BIT       busy
+*SFR* 000000F1H   DATA     BYTE      CANICR
+*SFR* 000000EAH   DATA     BYTE      CKCON
+*SFR* 000000E6H   DATA     BYTE      CMPCR1
+*SFR* 000000E7H   DATA     BYTE      CMPCR2
+*DEL*:00000000H   CODE     ---       delay_ms?_
+*SFR* 000000A8H.7 DATA     BIT       EA
+*SFR* 000000BAH.7 DATA     BIT       EAXFR
+*SFR* 000000A8H.4 DATA     BIT       ES
+*SFR* 000000A8H.1 DATA     BIT       ET0
+      00FF032AH   CODE     ---       exp?_
+      00FF0AAFH   CODE     ---       free
+*SFR* 000000C7H   DATA     BYTE      IAP_CONTR
+*SFR* 000000A8H   DATA     BYTE      IE
+*SFR* 000000AFH   DATA     BYTE      IE2
+*SFR* 0000008FH   DATA     BYTE      INTCLKO
+*SFR* 000000B8H   DATA     BYTE      IP
+*SFR* 000000B5H   DATA     BYTE      IP2
+*SFR* 000000B6H   DATA     BYTE      IP2H
+*SFR* 000000DFH   DATA     BYTE      IP3
+*SFR* 000000EEH   DATA     BYTE      IP3H
+*SFR* 000000B7H   DATA     BYTE      IPH
+*SFR* 0000009DH   DATA     BYTE      IRCBAND
+      00FF1A52H   CODE     ---       l_postprocess_sum?_
+*SFR* 000000F9H   DATA     BYTE      LINICR
+      00FF0C9AH   CODE     ---       main
+      00FF0B9AH   CODE     ---       malloc
+      00FE00B4H   HCONST   ---       mdl_data
+      00FF0C34H   CODE     ---       memcpy?_
+      00FF0C59H   CODE     ---       memset?_
+*SFR* 00000080H   DATA     BYTE      P0
+*SFR* 00000094H   DATA     BYTE      P0M0
+*SFR* 00000093H   DATA     BYTE      P0M1
+*SFR* 00000090H   DATA     BYTE      P1
+*SFR* 00000090H.0 DATA     BIT       P10
+*SFR* 00000092H   DATA     BYTE      P1M0
+*SFR* 00000091H   DATA     BYTE      P1M1
+*SFR* 000000A0H   DATA     BYTE      P2
+*SFR* 00000096H   DATA     BYTE      P2M0
+*SFR* 00000095H   DATA     BYTE      P2M1
+*SFR* 000000B0H   DATA     BYTE      P3
+*SFR* 000000B2H   DATA     BYTE      P3M0
+*SFR* 000000B1H   DATA     BYTE      P3M1
+*SFR* 000000C0H   DATA     BYTE      P4
+*SFR* 000000B4H   DATA     BYTE      P4M0
+*SFR* 000000B3H   DATA     BYTE      P4M1
+*SFR* 000000C8H   DATA     BYTE      P5
+*SFR* 000000CAH   DATA     BYTE      P5M0
+*SFR* 000000C9H   DATA     BYTE      P5M1
+*SFR* 000000E8H   DATA     BYTE      P6
+*SFR* 000000F8H   DATA     BYTE      P7
+*SFR* 000000A2H   DATA     BYTE      P_SW1
+*SFR* 000000BAH   DATA     BYTE      P_SW2
+*SFR* 000000BBH   DATA     BYTE      P_SW3
+*SFR* 00000087H   DATA     BYTE      PCON
+      00FF02C5H   CODE     NEAR LAB  printf
+*SFR* 000000D0H   DATA     BYTE      PSW
+      00FF000EH   CODE     ---       putchar
+*SFR* 00000098H.0 DATA     BIT       RI
+      00000025H   EDATA    CHAR      rptr
+*SFR* 000000FFH   DATA     BYTE      RSTCFG
+*SFR* 0000009AH   DATA     BYTE      S2CON
+*SFR* 000000ACH   DATA     BYTE      S3CON
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 7
+
+
+*SFR* 000000FDH   DATA     BYTE      S4CON
+*SFR* 00000099H   DATA     BYTE      SBUF
+*SFR* 00000098H   DATA     BYTE      SCON
+*SFR* 000000CEH   DATA     BYTE      SPCTL
+*SFR* 000000CDH   DATA     BYTE      SPSTAT
+      00000021H   EDATA    DWORD     systick
+*SFR* 00000089H.2 DATA     BIT       T0_CT
+*SFR* 0000008FH.0 DATA     BIT       T0CLKO
+*SFR* 0000008EH.7 DATA     BIT       T0x12
+*SFR* 000000D6H   DATA     BYTE      T2H
+*SFR* 000000D7H   DATA     BYTE      T2L
+*SFR* 000000DDH   DATA     BYTE      T4T3M
+*SFR* 00000088H   DATA     BYTE      TCON
+*SFR* 0000008CH   DATA     BYTE      TH0
+*SFR* 00000098H.1 DATA     BIT       TI
+      00FF0E4CH   CODE     ---       Timer0_init?_
+      00FF0C73H   CODE     ---       timer0_int?_
+*SFR* 0000008AH   DATA     BYTE      TL0
+      00FF1BACH   CODE     ---       tm_dot_prod?_
+      00FF1ADBH   CODE     ---       tm_dot_prod_3x3x1?_
+*DEL*:00000000H   CODE     ---       tm_dot_prod_gap_3x3x1?_
+      00FF2070H   CODE     ---       tm_dot_prod_pack2?_
+      00FF2A61H   CODE     ---       tm_load?_
+      00FF23DBH   CODE     ---       tm_preprocess?_
+      00FF24E1H   CODE     ---       tm_run?_
+      00FF2B64H   CODE     ---       tm_stat?_
+      00FF0E87H   CODE     ---       tm_unload?_
+      00FF1014H   CODE     ---       tml_conv2d_dwconv2d?_
+      00FF1D07H   CODE     ---       tml_fc?_
+      00FF22E9H   CODE     ---       tml_gap?_
+      00FF0007H   CODE     ---       tml_reshape?_
+      00FF1E24H   CODE     ---       tml_softmax?_
+*SFR* 00000089H   DATA     BYTE      TMOD
+*SFR* 00000088H.4 DATA     BIT       TR0
+      00FF0FE1H   CODE     ---       UartIsr?_
+      00FF0F17H   CODE     ---       UartSend?_
+*DEL*:00000000H   CODE     ---       UartSendStr?_
+*SFR* 000000F4H   DATA     BYTE      USBCON
+*SFR* 000000C1H   DATA     BYTE      WDT_CONTR
+      00000336H   EDATA    CHAR      wptr
+*SFR* 000000E9H   DATA     BYTE      WTST
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\TinyMaix (putchar)
+
+      VALUE       REP       CLASS    TYPE      SYMBOL NAME
+      ====================================================
+      ---         MODULE    ---      ---       putchar
+      00FF000EH   PUBLIC    CODE     ---       putchar
+
+      ---         MODULE    ---      ---       main
+      00FE00B4H   PUBLIC    HCONST   ---       mdl_data
+      00FF0C73H   PUBLIC    CODE     ---       timer0_int?_
+      00FF0C9AH   PUBLIC    CODE     ---       main
+      00FF0F17H   PUBLIC    CODE     ---       UartSend?_
+      00FF0E4CH   PUBLIC    CODE     ---       Timer0_init?_
+      00FF0FE1H   PUBLIC    CODE     ---       UartIsr?_
+      00000021H   PUBLIC    EDATA    DWORD     systick
+      00000025H   PUBLIC    EDATA    CHAR      rptr
+      00000336H   PUBLIC    EDATA    CHAR      wptr
+      000008EFH   PUBLIC    EDATA    ---       buffer
+      00000020H.0 PUBLIC    BIT      BIT       busy
+      00000094H   SFRSYM    DATA     BYTE      P0M0
+      00000089H.2 SFRSYM    DATA     BIT       T0_CT
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 8
+
+
+      000000D0H   SFRSYM    DATA     BYTE      PSW
+      000000BAH.7 SFRSYM    DATA     BIT       EAXFR
+      0000009DH   SFRSYM    DATA     BYTE      IRCBAND
+      00000097H   SFRSYM    DATA     BYTE      AUXR2
+      000000EAH   SFRSYM    DATA     BYTE      CKCON
+      000000EFH   SFRSYM    DATA     BYTE      AUXINTIF
+      000000FDH   SFRSYM    DATA     BYTE      S4CON
+      000000ACH   SFRSYM    DATA     BYTE      S3CON
+      0000009AH   SFRSYM    DATA     BYTE      S2CON
+      000000B7H   SFRSYM    DATA     BYTE      IPH
+      000000CDH   SFRSYM    DATA     BYTE      SPSTAT
+      0000008EH.7 SFRSYM    DATA     BIT       T0x12
+      000000DDH   SFRSYM    DATA     BYTE      T4T3M
+      000000C1H   SFRSYM    DATA     BYTE      WDT_CONTR
+      00000088H.4 SFRSYM    DATA     BIT       TR0
+      000000E9H   SFRSYM    DATA     BYTE      WTST
+      000000D7H   SFRSYM    DATA     BYTE      T2L
+      0000008AH   SFRSYM    DATA     BYTE      TL0
+      000000D6H   SFRSYM    DATA     BYTE      T2H
+      0000008CH   SFRSYM    DATA     BYTE      TH0
+      000000DFH   SFRSYM    DATA     BYTE      IP3
+      000000F4H   SFRSYM    DATA     BYTE      USBCON
+      000000B5H   SFRSYM    DATA     BYTE      IP2
+      000000FFH   SFRSYM    DATA     BYTE      RSTCFG
+      000000A8H.1 SFRSYM    DATA     BIT       ET0
+      000000C7H   SFRSYM    DATA     BYTE      IAP_CONTR
+      000000F9H   SFRSYM    DATA     BYTE      LINICR
+      0000008EH   SFRSYM    DATA     BYTE      AUXR
+      000000AFH   SFRSYM    DATA     BYTE      IE2
+      00000088H   SFRSYM    DATA     BYTE      TCON
+      00000089H   SFRSYM    DATA     BYTE      TMOD
+      00000098H   SFRSYM    DATA     BYTE      SCON
+      000000F1H   SFRSYM    DATA     BYTE      CANICR
+      00000087H   SFRSYM    DATA     BYTE      PCON
+      00000090H.0 SFRSYM    DATA     BIT       P10
+      00000099H   SFRSYM    DATA     BYTE      SBUF
+      000000BCH   SFRSYM    DATA     BYTE      ADC_CONTR
+      0000008FH.0 SFRSYM    DATA     BIT       T0CLKO
+      000000E7H   SFRSYM    DATA     BYTE      CMPCR2
+      000000E6H   SFRSYM    DATA     BYTE      CMPCR1
+      00000098H.1 SFRSYM    DATA     BIT       TI
+      00000098H.0 SFRSYM    DATA     BIT       RI
+      000000DEH   SFRSYM    DATA     BYTE      ADCCFG
+      000000B8H   SFRSYM    DATA     BYTE      IP
+      000000A8H.4 SFRSYM    DATA     BIT       ES
+      0000008FH   SFRSYM    DATA     BYTE      INTCLKO
+      000000EEH   SFRSYM    DATA     BYTE      IP3H
+      000000B6H   SFRSYM    DATA     BYTE      IP2H
+      000000A8H   SFRSYM    DATA     BYTE      IE
+      000000BBH   SFRSYM    DATA     BYTE      P_SW3
+      000000BAH   SFRSYM    DATA     BYTE      P_SW2
+      000000A2H   SFRSYM    DATA     BYTE      P_SW1
+      000000CEH   SFRSYM    DATA     BYTE      SPCTL
+      000000F8H   SFRSYM    DATA     BYTE      P7
+      000000A8H.7 SFRSYM    DATA     BIT       EA
+      000000E8H   SFRSYM    DATA     BYTE      P6
+      000000C8H   SFRSYM    DATA     BYTE      P5
+      000000C0H   SFRSYM    DATA     BYTE      P4
+      000000C9H   SFRSYM    DATA     BYTE      P5M1
+      000000B0H   SFRSYM    DATA     BYTE      P3
+      000000B3H   SFRSYM    DATA     BYTE      P4M1
+      000000CAH   SFRSYM    DATA     BYTE      P5M0
+      000000A0H   SFRSYM    DATA     BYTE      P2
+      000000B1H   SFRSYM    DATA     BYTE      P3M1
+      000000B4H   SFRSYM    DATA     BYTE      P4M0
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 9
+
+
+      00000090H   SFRSYM    DATA     BYTE      P1
+      00000095H   SFRSYM    DATA     BYTE      P2M1
+      000000B2H   SFRSYM    DATA     BYTE      P3M0
+      00000080H   SFRSYM    DATA     BYTE      P0
+      00000091H   SFRSYM    DATA     BYTE      P1M1
+      00000096H   SFRSYM    DATA     BYTE      P2M0
+      00000092H   SFRSYM    DATA     BYTE      P1M0
+      00000093H   SFRSYM    DATA     BYTE      P0M1
+      FFFFFFFFH   STKSYM    ---      INT       x
+      FFFFFFFDH   STKSYM    ---      INT       y
+      FFFFFFFBH   STKSYM    ---      INT       c
+      FFFFFFF9H   STKSYM    ---      INT       w
+      FFFFFFF7H   STKSYM    ---      INT       ch
+      FFFFFFF3H   STKSYM    ---      ---       output
+      FFFFFFF5H   STKSYM    ---      ---       out
+      REG=5       REGSYM    ---      ---       dat
+      DR28        REGSYM    ---      FLOAT     maxp
+      WR26        REGSYM    ---      INT       maxi
+      WR24        REGSYM    ---      INT       i
+      WR8         REGSYM    ---      WORD      i
+      FFFFFFE9H   STKSYM    ---      ---       mdl
+      WR14        REGSYM    ---      INT       i
+      FFFFFFDDH   STKSYM    ---      ---       in_uint8
+      FFFFFFD1H   STKSYM    ---      ---       in
+      FFFFFFC5H   STKSYM    ---      ---       outs
+      WR14        REGSYM    ---      INT       res
+      FFFFFFC1H   STKSYM    ---      DWORD     _start
+      DR4         REGSYM    ---      DWORD     _finish
+      DR4         REGSYM    ---      DWORD     _time
+      00FF0C73H   LINE      ---      ---       #50
+      00FF0C79H   LINE      ---      ---       #52
+      00FF0C83H   LINE      ---      ---       #53
+      00FF0C93H   LINE      ---      ---       #54
+      00FF0C9AH   LINE      ---      ---       #236
+      00FF0C9EH   LINE      ---      ---       #237
+      00FF0C9EH   LINE      ---      ---       #244
+      00FF0C9EH   LINE      ---      ---       #246
+      00FF0CA1H   LINE      ---      ---       #247
+      00FF0CA4H   LINE      ---      ---       #248
+      00FF0CA7H   LINE      ---      ---       #250
+      00FF0CAAH   LINE      ---      ---       #251
+      00FF0CADH   LINE      ---      ---       #252
+      00FF0CB0H   LINE      ---      ---       #253
+      00FF0CB3H   LINE      ---      ---       #254
+      00FF0CB6H   LINE      ---      ---       #255
+      00FF0CB9H   LINE      ---      ---       #256
+      00FF0CBCH   LINE      ---      ---       #257
+      00FF0CBFH   LINE      ---      ---       #258
+      00FF0CC2H   LINE      ---      ---       #259
+      00FF0CC5H   LINE      ---      ---       #260
+      00FF0CC8H   LINE      ---      ---       #261
+      00FF0CCBH   LINE      ---      ---       #263
+      00FF0CCDH   LINE      ---      ---       #264
+      00FF0CCFH   LINE      ---      ---       #265
+      00FF0CD1H   LINE      ---      ---       #267
+      00FF0CD3H   LINE      ---      ---       #269
+      00FF0CDBH   LINE      ---      ---       #270
+      00FF0CE3H   LINE      ---      ---       #271
+      00FF0CE7H   LINE      ---      ---       #272
+      00FF0CEFH   LINE      ---      ---       #273
+      00FF0CFBH   LINE      ---      ---       #275
+      00FF0D03H   LINE      ---      ---       #276
+      00FF0D0BH   LINE      ---      ---       #277
+      00FF0D0FH   LINE      ---      ---       #278
+      00FF0D17H   LINE      ---      ---       #279
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 10
+
+
+      00FF0D21H   LINE      ---      ---       #289
+      00FF0D2CH   LINE      ---      ---       #291
+      00FF0D2EH   LINE      ---      ---       #292
+      00FF0D43H   LINE      ---      ---       #293
+      00FF0D5CH   LINE      ---      ---       #294
+      00FF0D64H   LINE      ---      ---       #296
+      00FF0D6FH   LINE      ---      ---       #298
+      00FF0D9AH   LINE      ---      ---       #299
+      00FF0D9EH   LINE      ---      ---       #300
+      00FF0DADH   LINE      ---      ---       #301
+      00FF0DAFH   LINE      ---      ---       #302
+      00FF0DAFH   LINE      ---      ---       #304
+      00FF0DD0H   LINE      ---      ---       #306
+      00FF0DDCH   LINE      ---      ---       #307
+      00FF0DF7H   LINE      ---      ---       #308
+      00FF0E20H   LINE      ---      ---       #310
+      00FF0E2EH   LINE      ---      ---       #311
+      00FF0E3DH   LINE      ---      ---       #312
+      00FF0E45H   LINE      ---      ---       #314
+      00FF0E47H   LINE      ---      ---       #315
+      00FF0F17H   LINE      ---      ---       #212
+      00FF0F19H   LINE      ---      ---       #214
+      00FF0F1CH   LINE      ---      ---       #215
+      00FF0F1EH   LINE      ---      ---       #216
+      00FF0F21H   LINE      ---      ---       #217
+      00FF0EB0H   LINE      ---      ---       #165
+      00FF0EB6H   LINE      ---      ---       #166
+      00FF0EB6H   LINE      ---      ---       #167
+      00FF0EC2H   LINE      ---      ---       #168
+      00FF0ECAH   LINE      ---      ---       #169
+      00FF0ECCH   LINE      ---      ---       #170
+      00FF0ED0H   LINE      ---      ---       #171
+      00FF0ED2H   LINE      ---      ---       #172
+      00FF0ED2H   LINE      ---      ---       #173
+      00FF0EEEH   LINE      ---      ---       #174
+      00FF0EF0H   LINE      ---      ---       #175
+      00FF0EF7H   LINE      ---      ---       #176
+      00FF0EFFH   LINE      ---      ---       #178
+      00FF0F12H   LINE      ---      ---       #179
+      00FF0F12H   LINE      ---      ---       #180
+      00FF0E69H   LINE      ---      ---       #197
+      00FF0E69H   LINE      ---      ---       #199
+      00FF0E6CH   LINE      ---      ---       #201
+      00FF0E6FH   LINE      ---      ---       #202
+      00FF0E72H   LINE      ---      ---       #204
+      00FF0E75H   LINE      ---      ---       #205
+      00FF0E78H   LINE      ---      ---       #206
+      00FF0E7BH   LINE      ---      ---       #207
+      00FF0E80H   LINE      ---      ---       #208
+      00FF0E84H   LINE      ---      ---       #209
+      00FF0E86H   LINE      ---      ---       #210
+      00FF0F22H   LINE      ---      ---       #133
+      00FF0F2CH   LINE      ---      ---       #134
+      00FF0F2CH   LINE      ---      ---       #136
+      00FF0F2CH   LINE      ---      ---       #137
+      00FF0F34H   LINE      ---      ---       #138
+      00FF0F3CH   LINE      ---      ---       #139
+      00FF0F56H   LINE      ---      ---       #140
+      00FF0F5AH   LINE      ---      ---       #141
+      00FF0F5AH   LINE      ---      ---       #144
+      00FF0F5AH   LINE      ---      ---       #146
+      00FF0F5AH   LINE      ---      ---       #151
+      00FF0FC4H   LINE      ---      ---       #153
+      00FF0FDAH   LINE      ---      ---       #161
+      00FF0E4CH   LINE      ---      ---       #16
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 11
+
+
+      00FF0E4CH   LINE      ---      ---       #18
+      00FF0E4EH   LINE      ---      ---       #24
+      00FF0E50H   LINE      ---      ---       #26
+      00FF0E53H   LINE      ---      ---       #27
+      00FF0E57H   LINE      ---      ---       #29
+      00FF0E5AH   LINE      ---      ---       #31
+      00FF0E5DH   LINE      ---      ---       #34
+      00FF0E60H   LINE      ---      ---       #35
+      00FF0E63H   LINE      ---      ---       #36
+      00FF0E66H   LINE      ---      ---       #43
+      00FF0E68H   LINE      ---      ---       #48
+      00FF0FE1H   LINE      ---      ---       #182
+      00FF0FE5H   LINE      ---      ---       #184
+      00FF0FE8H   LINE      ---      ---       #186
+      00FF0FEAH   LINE      ---      ---       #187
+      00FF0FECH   LINE      ---      ---       #188
+      00FF0FECH   LINE      ---      ---       #189
+      00FF0FEFH   LINE      ---      ---       #191
+      00FF0FF1H   LINE      ---      ---       #192
+      00FF1005H   LINE      ---      ---       #193
+      00FF100FH   LINE      ---      ---       #194
+
+      ---         MODULE    ---      ---       tm_layers
+      00FF1014H   PUBLIC    CODE     ---       tml_conv2d_dwconv2d?_
+      00FF1ADBH   PUBLIC    CODE     ---       tm_dot_prod_3x3x1?_
+      00FF0007H   PUBLIC    CODE     ---       tml_reshape?_
+      00FF1BACH   PUBLIC    CODE     ---       tm_dot_prod?_
+      00FF1E24H   PUBLIC    CODE     ---       tml_softmax?_
+      00FF1A52H   PUBLIC    CODE     ---       l_postprocess_sum?_
+      00FF2070H   PUBLIC    CODE     ---       tm_dot_prod_pack2?_
+      00FF22E9H   PUBLIC    CODE     ---       tml_gap?_
+      00FF1D07H   PUBLIC    CODE     ---       tml_fc?_
+      DR20        REGSYM    ---      LONG      sum
+      DR16        REGSYM    ---      DWORD     i
+      DR12        REGSYM    ---      DWORD     cnt
+      DR20        REGSYM    ---      LONG      sum0
+      DR24        REGSYM    ---      LONG      sum1
+      FFFFFFFDH   STKSYM    ---      ---       kptr0
+      REG=4       REGSYM    ---      ---       kptr1
+      DR12        REGSYM    ---      DWORD     i
+      FFFFFFF9H   STKSYM    ---      DWORD     cnt
+      DR28        REGSYM    ---      FLOAT     sumf
+      FFFFFFFFH   STKSYM    ---      INT       pad_flag
+      FFFFFFFDH   STKSYM    ---      INT       maxk
+      FFFFFFFBH   STKSYM    ---      INT       chi
+      FFFFFFF9H   STKSYM    ---      INT       cho
+      FFFFFFF5H   STKSYM    ---      LONG      sum
+      FFFFFFF1H   STKSYM    ---      ---       sptr
+      FFFFFFEDH   STKSYM    ---      ---       outp
+      FFFFFFEBH   STKSYM    ---      INT       x
+      FFFFFFE9H   STKSYM    ---      INT       y
+      FFFFFFE7H   STKSYM    ---      INT       c
+      FFFFFFE5H   STKSYM    ---      INT       cc
+      WR0         REGSYM    ---      INT       k
+      WR6         REGSYM    ---      INT       oft
+      WR4         REGSYM    ---      INT       idx
+      FFFFFFE3H   STKSYM    ---      INT       slow_flag
+      FFFFFFE1H   STKSYM    ---      INT       _ky
+      FFFFFFDFH   STKSYM    ---      INT       _kx
+      FFFFFFD7H   STKSYM    ---      ---       sums
+      FFFFFFD3H   STKSYM    ---      FLOAT     outscale
+      FFFFFFC7H   STKSYM    ---      ---       sptr
+      FFFFFFC3H   STKSYM    ---      ---       kptr
+      FFFFFFD1H   STKSYM    ---      INT       src_y0
+      FFFFFFCFH   STKSYM    ---      INT       src_x0
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 12
+
+
+      FFFFFFCBH   STKSYM    ---      LONG      sum
+      FFFFFFC7H   STKSYM    ---      ---       sptr_base
+      FFFFFFC3H   STKSYM    ---      ---       sptr
+      FFFFFFBFH   STKSYM    ---      DWORD     sidx
+      FFFFFFC9H   STKSYM    ---      INT       _ky0
+      FFFFFFC7H   STKSYM    ---      INT       _kx0
+      FFFFFFC5H   STKSYM    ---      INT       _ky1
+      FFFFFFC3H   STKSYM    ---      INT       _kx1
+      FFFFFFBFH   STKSYM    ---      DWORD     sidx
+      FFFFFFBBH   STKSYM    ---      DWORD     s_step
+      FFFFFFB7H   STKSYM    ---      ---       sptr_base
+      FFFFFFB3H   STKSYM    ---      ---       sptr
+      FFFFFFADH   STKSYM    ---      INT       k
+      FFFFFFAFH   STKSYM    ---      ---       kptr
+      FFFFFFAFH   STKSYM    ---      ---       kptr
+      FFFFFFFDH   STKSYM    ---      ---       dat
+      WR30        REGSYM    ---      INT       c
+      WR28        REGSYM    ---      INT       y
+      WR2         REGSYM    ---      INT       x
+      FFFFFFF9H   STKSYM    ---      LONG      sum
+      FFFFFFFDH   STKSYM    ---      ---       dat
+      FFFFFFFBH   STKSYM    ---      INT       c
+      FFFFFFF7H   STKSYM    ---      LONG      sum
+      FFFFFFFFH   STKSYM    ---      INT       c
+      REG=7       REGSYM    ---      ---       din
+      FFFFFFFBH   STKSYM    ---      ---       dout
+      FFFFFFF7H   STKSYM    ---      FLOAT     dmax
+      FFFFFFF3H   STKSYM    ---      FLOAT     sum
+      00FF1014H   LINE      ---      ---       #103
+      00FF101EH   LINE      ---      ---       #108
+      00FF101EH   LINE      ---      ---       #125
+      00FF1032H   LINE      ---      ---       #126
+      00FF1039H   LINE      ---      ---       #128
+      00FF1043H   LINE      ---      ---       #129
+      00FF1045H   LINE      ---      ---       #130
+      00FF1045H   LINE      ---      ---       #132
+      00FF1053H   LINE      ---      ---       #133
+      00FF1059H   LINE      ---      ---       #134
+      00FF1060H   LINE      ---      ---       #135
+      00FF107AH   LINE      ---      ---       #136
+      00FF1081H   LINE      ---      ---       #137
+      00FF1081H   LINE      ---      ---       #139
+      00FF1089H   LINE      ---      ---       #140
+      00FF1099H   LINE      ---      ---       #141
+      00FF10A3H   LINE      ---      ---       #142
+      00FF10BBH   LINE      ---      ---       #143
+      00FF10E7H   LINE      ---      ---       #151
+      00FF10F7H   LINE      ---      ---       #152
+      00FF1149H   LINE      ---      ---       #159
+      00FF1155H   LINE      ---      ---       #160
+      00FF115BH   LINE      ---      ---       #161
+      00FF115FH   LINE      ---      ---       #162
+      00FF1197H   LINE      ---      ---       #163
+      00FF11A7H   LINE      ---      ---       #164
+      00FF11ADH   LINE      ---      ---       #165
+      00FF11AFH   LINE      ---      ---       #166
+      00FF11D8H   LINE      ---      ---       #167
+      00FF123AH   LINE      ---      ---       #169
+      00FF1244H   LINE      ---      ---       #170
+      00FF1256H   LINE      ---      ---       #171
+      00FF12B8H   LINE      ---      ---       #173
+      00FF12C2H   LINE      ---      ---       #174
+      00FF12D4H   LINE      ---      ---       #175
+      00FF12F0H   LINE      ---      ---       #176
+      00FF1308H   LINE      ---      ---       #177
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 13
+
+
+      00FF130AH   LINE      ---      ---       #178
+      00FF1333H   LINE      ---      ---       #179
+      00FF1395H   LINE      ---      ---       #180
+      00FF13A7H   LINE      ---      ---       #181
+      00FF13C1H   LINE      ---      ---       #182
+      00FF13E1H   LINE      ---      ---       #183
+      00FF1401H   LINE      ---      ---       #184
+      00FF1421H   LINE      ---      ---       #186
+      00FF1426H   LINE      ---      ---       #187
+      00FF1426H   LINE      ---      ---       #189
+      00FF1426H   LINE      ---      ---       #191
+      00FF1426H   LINE      ---      ---       #193
+      00FF1426H   LINE      ---      ---       #194
+      00FF1428H   LINE      ---      ---       #195
+      00FF142AH   LINE      ---      ---       #196
+      00FF142EH   LINE      ---      ---       #197
+      00FF1432H   LINE      ---      ---       #198
+      00FF1444H   LINE      ---      ---       #199
+      00FF1446H   LINE      ---      ---       #200
+      00FF144CH   LINE      ---      ---       #201
+      00FF1462H   LINE      ---      ---       #202
+      00FF1470H   LINE      ---      ---       #203
+      00FF1486H   LINE      ---      ---       #205
+      00FF149CH   LINE      ---      ---       #207
+      00FF14A2H   LINE      ---      ---       #208
+      00FF14A5H   LINE      ---      ---       #209
+      00FF14B9H   LINE      ---      ---       #210
+      00FF14BEH   LINE      ---      ---       #211
+      00FF14D2H   LINE      ---      ---       #213
+      00FF1530H   LINE      ---      ---       #216
+      00FF1534H   LINE      ---      ---       #218
+      00FF1556H   LINE      ---      ---       #220
+      00FF155EH   LINE      ---      ---       #221
+      00FF1568H   LINE      ---      ---       #222
+      00FF1570H   LINE      ---      ---       #223
+      00FF1574H   LINE      ---      ---       #224
+      00FF15A5H   LINE      ---      ---       #225
+      00FF15AFH   LINE      ---      ---       #226
+      00FF15C7H   LINE      ---      ---       #227
+      00FF15FAH   LINE      ---      ---       #228
+      00FF1620H   LINE      ---      ---       #229
+      00FF1622H   LINE      ---      ---       #230
+      00FF1634H   LINE      ---      ---       #231
+      00FF1646H   LINE      ---      ---       #232
+      00FF165CH   LINE      ---      ---       #233
+      00FF1672H   LINE      ---      ---       #234
+      00FF167CH   LINE      ---      ---       #235
+      00FF16A9H   LINE      ---      ---       #236
+      00FF16CBH   LINE      ---      ---       #237
+      00FF16D3H   LINE      ---      ---       #238
+      00FF16FCH   LINE      ---      ---       #239
+      00FF1700H   LINE      ---      ---       #240
+      00FF1706H   LINE      ---      ---       #241
+      00FF170CH   LINE      ---      ---       #242
+      00FF1720H   LINE      ---      ---       #243
+      00FF174FH   LINE      ---      ---       #244
+      00FF1765H   LINE      ---      ---       #245
+      00FF177BH   LINE      ---      ---       #246
+      00FF1795H   LINE      ---      ---       #247
+      00FF17C6H   LINE      ---      ---       #248
+      00FF17ECH   LINE      ---      ---       #249
+      00FF17ECH   LINE      ---      ---       #250
+      00FF17F8H   LINE      ---      ---       #251
+      00FF1814H   LINE      ---      ---       #252
+      00FF1818H   LINE      ---      ---       #254
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 14
+
+
+      00FF183EH   LINE      ---      ---       #255
+      00FF1852H   LINE      ---      ---       #257
+      00FF18B3H   LINE      ---      ---       #258
+      00FF18C5H   LINE      ---      ---       #259
+      00FF18DFH   LINE      ---      ---       #260
+      00FF18FFH   LINE      ---      ---       #261
+      00FF1901H   LINE      ---      ---       #262
+      00FF1905H   LINE      ---      ---       #264
+      00FF192DH   LINE      ---      ---       #265
+      00FF1952H   LINE      ---      ---       #267
+      00FF19B3H   LINE      ---      ---       #268
+      00FF19C5H   LINE      ---      ---       #269
+      00FF19CDH   LINE      ---      ---       #270
+      00FF19E7H   LINE      ---      ---       #271
+      00FF1A07H   LINE      ---      ---       #272
+      00FF1A07H   LINE      ---      ---       #273
+      00FF1A07H   LINE      ---      ---       #275
+      00FF1A07H   LINE      ---      ---       #277
+      00FF1A07H   LINE      ---      ---       #278
+      00FF1A28H   LINE      ---      ---       #279
+      00FF1A49H   LINE      ---      ---       #280
+      00FF1A49H   LINE      ---      ---       #282
+      00FF1A49H   LINE      ---      ---       #284
+      00FF1A49H   LINE      ---      ---       #285
+      00FF1A4BH   LINE      ---      ---       #286
+      00FF1ADBH   LINE      ---      ---       #73
+      00FF1ADFH   LINE      ---      ---       #75
+      00FF1BABH   LINE      ---      ---       #78
+      00FF1BABH   LINE      ---      ---       #79
+      00FF0007H   LINE      ---      ---       #369
+      00FF0007H   LINE      ---      ---       #371
+      00FF0009H   LINE      ---      ---       #372
+      00FF1BACH   LINE      ---      ---       #14
+      00FF1BB2H   LINE      ---      ---       #15
+      00FF1BB2H   LINE      ---      ---       #16
+      00FF1BB4H   LINE      ---      ---       #17
+      00FF1BB6H   LINE      ---      ---       #18
+      00FF1BD4H   LINE      ---      ---       #19
+      00FF1BD6H   LINE      ---      ---       #20
+      00FF1BF3H   LINE      ---      ---       #21
+      00FF1C10H   LINE      ---      ---       #22
+      00FF1C2DH   LINE      ---      ---       #23
+      00FF1C4AH   LINE      ---      ---       #24
+      00FF1C67H   LINE      ---      ---       #25
+      00FF1C84H   LINE      ---      ---       #26
+      00FF1CA1H   LINE      ---      ---       #27
+      00FF1CBEH   LINE      ---      ---       #28
+      00FF1CCAH   LINE      ---      ---       #29
+      00FF1CCCH   LINE      ---      ---       #30
+      00FF1CE7H   LINE      ---      ---       #31
+      00FF1CF5H   LINE      ---      ---       #32
+      00FF1D04H   LINE      ---      ---       #33
+      00FF1D04H   LINE      ---      ---       #34
+      00FF1E24H   LINE      ---      ---       #333
+      00FF1E2EH   LINE      ---      ---       #335
+      00FF1E2EH   LINE      ---      ---       #338
+      00FF1E36H   LINE      ---      ---       #339
+      00FF1E4EH   LINE      ---      ---       #340
+      00FF1E5EH   LINE      ---      ---       #341
+      00FF1E68H   LINE      ---      ---       #342
+      00FF1E6AH   LINE      ---      ---       #344
+      00FF1EB2H   LINE      ---      ---       #348
+      00FF1EE0H   LINE      ---      ---       #349
+      00FF1EF7H   LINE      ---      ---       #350
+      00FF1F0FH   LINE      ---      ---       #352
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 15
+
+
+      00FF1F13H   LINE      ---      ---       #353
+      00FF1F42H   LINE      ---      ---       #354
+      00FF1F83H   LINE      ---      ---       #355
+      00FF1FB7H   LINE      ---      ---       #356
+      00FF1FD2H   LINE      ---      ---       #357
+      00FF1FEAH   LINE      ---      ---       #358
+      00FF1FEEH   LINE      ---      ---       #360
+      00FF2051H   LINE      ---      ---       #364
+      00FF2067H   LINE      ---      ---       #365
+      00FF2069H   LINE      ---      ---       #366
+      00FF1A52H   LINE      ---      ---       #53
+      00FF1A54H   LINE      ---      ---       #61
+      00FF1A54H   LINE      ---      ---       #67
+      00FF1A56H   LINE      ---      ---       #69
+      00FF1A6AH   LINE      ---      ---       #74
+      00FF1A78H   LINE      ---      ---       #75
+      00FF1A78H   LINE      ---      ---       #76
+      00FF1A85H   LINE      ---      ---       #77
+      00FF1A87H   LINE      ---      ---       #78
+      00FF1A87H   LINE      ---      ---       #79
+      00FF1A94H   LINE      ---      ---       #81
+      00FF1AABH   LINE      ---      ---       #85
+      00FF1AABH   LINE      ---      ---       #86
+      00FF1AABH   LINE      ---      ---       #87
+      00FF1AABH   LINE      ---      ---       #88
+      00FF1AABH   LINE      ---      ---       #90
+      00FF1ADAH   LINE      ---      ---       #97
+      00FF1ADAH   LINE      ---      ---       #98
+      00FF2070H   LINE      ---      ---       #36
+      00FF207AH   LINE      ---      ---       #37
+      00FF207AH   LINE      ---      ---       #38
+      00FF207EH   LINE      ---      ---       #39
+      00FF207EH   LINE      ---      ---       #40
+      00FF2086H   LINE      ---      ---       #41
+      00FF2092H   LINE      ---      ---       #43
+      00FF2094H   LINE      ---      ---       #44
+      00FF20B0H   LINE      ---      ---       #45
+      00FF20B2H   LINE      ---      ---       #46
+      00FF20E9H   LINE      ---      ---       #47
+      00FF2120H   LINE      ---      ---       #48
+      00FF2157H   LINE      ---      ---       #49
+      00FF218EH   LINE      ---      ---       #50
+      00FF21C5H   LINE      ---      ---       #51
+      00FF21FCH   LINE      ---      ---       #52
+      00FF2233H   LINE      ---      ---       #53
+      00FF226AH   LINE      ---      ---       #54
+      00FF227EH   LINE      ---      ---       #55
+      00FF2280H   LINE      ---      ---       #56
+      00FF22A1H   LINE      ---      ---       #57
+      00FF22B5H   LINE      ---      ---       #58
+      00FF22C3H   LINE      ---      ---       #60
+      00FF22D2H   LINE      ---      ---       #61
+      00FF22E2H   LINE      ---      ---       #62
+      00FF22E2H   LINE      ---      ---       #63
+      00FF22E9H   LINE      ---      ---       #289
+      00FF22F1H   LINE      ---      ---       #290
+      00FF22F1H   LINE      ---      ---       #293
+      00FF22F5H   LINE      ---      ---       #294
+      00FF22FFH   LINE      ---      ---       #295
+      00FF2317H   LINE      ---      ---       #296
+      00FF231BH   LINE      ---      ---       #297
+      00FF231FH   LINE      ---      ---       #298
+      00FF2342H   LINE      ---      ---       #299
+      00FF2352H   LINE      ---      ---       #300
+      00FF235CH   LINE      ---      ---       #301
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 16
+
+
+      00FF2366H   LINE      ---      ---       #303
+      00FF23C8H   LINE      ---      ---       #309
+      00FF23D4H   LINE      ---      ---       #310
+      00FF23D6H   LINE      ---      ---       #311
+      00FF1D07H   LINE      ---      ---       #314
+      00FF1D11H   LINE      ---      ---       #316
+      00FF1D11H   LINE      ---      ---       #317
+      00FF1D21H   LINE      ---      ---       #319
+      00FF1D25H   LINE      ---      ---       #320
+      00FF1D2FH   LINE      ---      ---       #321
+      00FF1D61H   LINE      ---      ---       #322
+      00FF1D92H   LINE      ---      ---       #324
+      00FF1DFBH   LINE      ---      ---       #328
+      00FF1E1BH   LINE      ---      ---       #329
+      00FF1E1DH   LINE      ---      ---       #330
+
+      ---         MODULE    ---      ---       tm_model
+      00FF23DBH   PUBLIC    CODE     ---       tm_preprocess?_
+      00FF24E1H   PUBLIC    CODE     ---       tm_run?_
+      00FF0E87H   PUBLIC    CODE     ---       tm_unload?_
+      00FF2A61H   PUBLIC    CODE     ---       tm_load?_
+      REG=1       REGSYM    ---      ---       mdl_bin
+      WR18        REGSYM    ---      INT       i
+      REG=1       REGSYM    ---      ---       l0h
+      DR28        REGSYM    ---      FLOAT     in_s
+      DR24        REGSYM    ---      LONG      in_zp
+      WR16        REGSYM    ---      INT       in_size
+      FFFFFFFFH   STKSYM    ---      INT       i
+      FFFFFFF3H   STKSYM    ---      ---       _in
+      FFFFFFE7H   STKSYM    ---      ---       _out
+      FFFFFFE5H   STKSYM    ---      INT       res
+      FFFFFFE3H   STKSYM    ---      INT       out_idx
+      FFFFFFDFH   STKSYM    ---      ---       h
+      FFFFFFDBH   STKSYM    ---      ---       l
+      FFFFFFDBH   STKSYM    ---      ---       l
+      FFFFFFDBH   STKSYM    ---      ---       l
+      FFFFFFDBH   STKSYM    ---      ---       l
+      FFFFFFDBH   STKSYM    ---      ---       l
+      FFFFFFDDH   STKSYM    ---      INT       out_size
+      FFFFFFD9H   STKSYM    ---      ---       outf
+      00FF23DBH   LINE      ---      ---       #63
+      00FF23DFH   LINE      ---      ---       #64
+      00FF23DFH   LINE      ---      ---       #66
+      00FF23EAH   LINE      ---      ---       #67
+      00FF23F2H   LINE      ---      ---       #68
+      00FF23FAH   LINE      ---      ---       #69
+      00FF2414H   LINE      ---      ---       #70
+      00FF241EH   LINE      ---      ---       #72
+      00FF241EH   LINE      ---      ---       #73
+      00FF2422H   LINE      ---      ---       #74
+      00FF247AH   LINE      ---      ---       #75
+      00FF247CH   LINE      ---      ---       #76
+      00FF247CH   LINE      ---      ---       #77
+      00FF2480H   LINE      ---      ---       #78
+      00FF24B6H   LINE      ---      ---       #80
+      00FF24BCH   LINE      ---      ---       #81
+      00FF24BEH   LINE      ---      ---       #92
+      00FF24BEH   LINE      ---      ---       #93
+      00FF24DEH   LINE      ---      ---       #94
+      00FF24DEH   LINE      ---      ---       #95
+      00FF24DEH   LINE      ---      ---       #96
+      00FF24E0H   LINE      ---      ---       #97
+      00FF24E1H   LINE      ---      ---       #101
+      00FF24EBH   LINE      ---      ---       #104
+      00FF24F1H   LINE      ---      ---       #105
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 17
+
+
+      00FF24F5H   LINE      ---      ---       #106
+      00FF2508H   LINE      ---      ---       #107
+      00FF251BH   LINE      ---      ---       #108
+      00FF2524H   LINE      ---      ---       #109
+      00FF2534H   LINE      ---      ---       #110
+      00FF253EH   LINE      ---      ---       #111
+      00FF2560H   LINE      ---      ---       #112
+      00FF257DH   LINE      ---      ---       #113
+      00FF257DH   LINE      ---      ---       #114
+      00FF259FH   LINE      ---      ---       #115
+      00FF25BCH   LINE      ---      ---       #116
+      00FF25EDH   LINE      ---      ---       #117
+      00FF25EDH   LINE      ---      ---       #118
+      00FF25EDH   LINE      ---      ---       #119
+      00FF25FDH   LINE      ---      ---       #124
+      00FF26A8H   LINE      ---      ---       #127
+      00FF26ABH   LINE      ---      ---       #129
+      00FF26ABH   LINE      ---      ---       #130
+      00FF26BBH   LINE      ---      ---       #131
+      00FF2715H   LINE      ---      ---       #132
+      00FF2718H   LINE      ---      ---       #134
+      00FF2718H   LINE      ---      ---       #135
+      00FF2728H   LINE      ---      ---       #136
+      00FF27A7H   LINE      ---      ---       #140
+      00FF27AAH   LINE      ---      ---       #142
+      00FF27AAH   LINE      ---      ---       #143
+      00FF27BAH   LINE      ---      ---       #144
+      00FF2815H   LINE      ---      ---       #145
+      00FF2817H   LINE      ---      ---       #147
+      00FF2817H   LINE      ---      ---       #148
+      00FF2827H   LINE      ---      ---       #149
+      00FF2882H   LINE      ---      ---       #150
+      00FF2884H   LINE      ---      ---       #152
+      00FF2884H   LINE      ---      ---       #153
+      00FF288CH   LINE      ---      ---       #154
+      00FF288CH   LINE      ---      ---       #155
+      00FF288CH   LINE      ---      ---       #156
+      00FF2890H   LINE      ---      ---       #157
+      00FF2892H   LINE      ---      ---       #158
+      00FF28A0H   LINE      ---      ---       #159
+      00FF28ACH   LINE      ---      ---       #160
+      00FF28BEH   LINE      ---      ---       #162
+      00FF28E8H   LINE      ---      ---       #163
+      00FF28F5H   LINE      ---      ---       #165
+      00FF2911H   LINE      ---      ---       #166
+      00FF2911H   LINE      ---      ---       #167
+      00FF292DH   LINE      ---      ---       #168
+      00FF295FH   LINE      ---      ---       #169
+      00FF2963H   LINE      ---      ---       #170
+      00FF29D9H   LINE      ---      ---       #171
+      00FF2A04H   LINE      ---      ---       #172
+      00FF2A04H   LINE      ---      ---       #173
+      00FF2A0EH   LINE      ---      ---       #174
+      00FF2A0EH   LINE      ---      ---       #175
+      00FF2A34H   LINE      ---      ---       #176
+      00FF2A58H   LINE      ---      ---       #177
+      00FF2A5AH   LINE      ---      ---       #178
+      00FF0E87H   LINE      ---      ---       #54
+      00FF0E8BH   LINE      ---      ---       #55
+      00FF0E93H   LINE      ---      ---       #56
+      00FF0E9DH   LINE      ---      ---       #57
+      00FF0EABH   LINE      ---      ---       #58
+      00FF0EADH   LINE      ---      ---       #59
+      00FF0EADH   LINE      ---      ---       #60
+
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 18
+
+
+      ---         MODULE    ---      ---       tm_stat
+      00FF2B64H   PUBLIC    CODE     ---       tm_stat?_
+      FFFFFFFFH   STKSYM    ---      INT       layer_i
+      FFFFFFFDH   STKSYM    ---      INT       memout
+      FFFFFFFBH   STKSYM    ---      INT       ops
+      FFFFFFF7H   STKSYM    ---      ---       odim
+      FFFFFFF3H   STKSYM    ---      ---       idim
+      FFFFFFF1H   STKSYM    ---      INT       sum_param
+      FFFFFFEFH   STKSYM    ---      INT       sum_ops
+      FFFFFFEBH   STKSYM    ---      ---       layer_body
+      FFFFFFE7H   STKSYM    ---      ---       h
+      FFFFFFE3H   STKSYM    ---      ---       l
+      FFFFFFE3H   STKSYM    ---      ---       l
+      FFFFFFE3H   STKSYM    ---      ---       l
+      00FF2B64H   LINE      ---      ---       #47
+      00FF2B6CH   LINE      ---      ---       #48
+      00FF2B6CH   LINE      ---      ---       #51
+      00FF2B7AH   LINE      ---      ---       #52
+      00FF2B88H   LINE      ---      ---       #53
+      00FF2B8EH   LINE      ---      ---       #54
+      00FF2B92H   LINE      ---      ---       #57
+      00FF2BA0H   LINE      ---      ---       #60
+      00FF2BABH   LINE      ---      ---       #61
+      00FF2BC0H   LINE      ---      ---       #62
+      00FF2BD5H   LINE      ---      ---       #63
+      00FF2BF8H   LINE      ---      ---       #65
+      00FF2C2AH   LINE      ---      ---       #67
+      00FF2C5CH   LINE      ---      ---       #69
+      00FF2C7FH   LINE      ---      ---       #72
+      00FF2C8AH   LINE      ---      ---       #73
+      00FF2C95H   LINE      ---      ---       #74
+      00FF2CFEH   LINE      ---      ---       #79
+      00FF2D02H   LINE      ---      ---       #80
+      00FF2D12H   LINE      ---      ---       #88
+      00FF2D1DH   LINE      ---      ---       #89
+      00FF2D4BH   LINE      ---      ---       #90
+      00FF2D78H   LINE      ---      ---       #91
+      00FF2D7EH   LINE      ---      ---       #92
+      00FF2D98H   LINE      ---      ---       #93
+      00FF2D98H   LINE      ---      ---       #94
+      00FF2DA0H   LINE      ---      ---       #95
+      00FF2DB2H   LINE      ---      ---       #100
+      00FF2DB4H   LINE      ---      ---       #101
+      00FF2DB4H   LINE      ---      ---       #102
+      00FF2DDCH   LINE      ---      ---       #103
+      00FF2DDEH   LINE      ---      ---       #104
+      00FF2DDEH   LINE      ---      ---       #105
+      00FF2DE6H   LINE      ---      ---       #106
+      00FF2DF2H   LINE      ---      ---       #109
+      00FF2DF4H   LINE      ---      ---       #110
+      00FF2DF4H   LINE      ---      ---       #111
+      00FF2DFAH   LINE      ---      ---       #112
+      00FF2DFCH   LINE      ---      ---       #113
+      00FF2DFCH   LINE      ---      ---       #114
+      00FF2E04H   LINE      ---      ---       #115
+      00FF2E1EH   LINE      ---      ---       #120
+      00FF2E20H   LINE      ---      ---       #121
+      00FF2E20H   LINE      ---      ---       #122
+      00FF2E24H   LINE      ---      ---       #123
+      00FF2E24H   LINE      ---      ---       #124
+      00FF2E24H   LINE      ---      ---       #125
+      00FF2E32H   LINE      ---      ---       #126
+      00FF2EB8H   LINE      ---      ---       #130
+      00FF2ECBH   LINE      ---      ---       #131
+      00FF2ECDH   LINE      ---      ---       #132
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 19
+
+
+      00FF2ED3H   LINE      ---      ---       #133
+      00FF2ED3H   LINE      ---      ---       #134
+      00FF2EF5H   LINE      ---      ---       #135
+      00FF2F0DH   LINE      ---      ---       #136
+      00FF2F67H   LINE      ---      ---       #138
+      00FF2F69H   LINE      ---      ---       #139
+
+      ---         MODULE    ---      ---       ?C?FPADD
+      00FF002CH   PUBLIC    CODE     ---       ?C?FPADD
+      00FF0029H   PUBLIC    CODE     ---       ?C?FPSUB
+
+      ---         MODULE    ---      ---       ?C?FPMUL
+      00FF00E4H   PUBLIC    CODE     ---       ?C?FPMUL
+
+      ---         MODULE    ---      ---       ?C?FPDIV
+      00FF0184H   PUBLIC    CODE     ---       ?C?FPDIV
+
+      ---         MODULE    ---      ---       ?C?FPCMP
+      00FF0207H   PUBLIC    CODE     ---       ?C?FPCMP
+      00FF0205H   PUBLIC    CODE     ---       ?C?FPCMP3
+
+      ---         MODULE    ---      ---       ?C?FCAST
+      00FF0255H   PUBLIC    CODE     NEAR LAB  ?C?FCASTC
+      00FF0250H   PUBLIC    CODE     NEAR LAB  ?C?FCASTI
+      00FF024BH   PUBLIC    CODE     NEAR LAB  ?C?FCASTL
+
+      ---         MODULE    ---      ---       ?C?CASTF
+      00FF0288H   PUBLIC    CODE     NEAR LAB  ?C?CASTF
+
+      ---         MODULE    ---      ---       PRINTF
+      00000AEBH   PUBLIC    EDATA    ---       ?PRINTF?BYTE
+      00FF02C5H   PUBLIC    CODE     NEAR LAB  PRINTF
+
+      ---         MODULE    ---      ---       EXP?_
+      00FF032AH   PUBLIC    CODE     ---       EXP?_
+
+      ---         MODULE    ---      ---       ?C?FPGETOPN
+      00FF038DH   PUBLIC    CODE     ---       ?C?FPGETOPN2
+      00FF03CAH   PUBLIC    CODE     ---       ?C?FPNANRESULT
+      00FF03D2H   PUBLIC    CODE     ---       ?C?FPOVERFLOW
+      00FF03A6H   PUBLIC    CODE     ---       ?C?FPRESULT
+      00FF03BCH   PUBLIC    CODE     ---       ?C?FPRESULT2
+      00FF03CFH   PUBLIC    CODE     ---       ?C?FPUNDERFLOW
+
+      ---         MODULE    ---      ---       ?C?PRNFMT
+      00FF040BH   PUBLIC    CODE     ---       ?C?PRNFMT
+
+      ---         MODULE    ---      ---       ?C?FPSERIES
+      00FF081AH   PUBLIC    CODE     ---       ?C?FP2SERIES
+      00FF0823H   PUBLIC    CODE     ---       ?C?FPSERIES
+
+      ---         MODULE    ---      ---       ?C?FPCONVERT
+      00FF0855H   PUBLIC    CODE     ---       ?C?FPCONVERT
+      00FF090DH   PUBLIC    CODE     ---       ?C?FPROUND
+
+      ---         MODULE    ---      ---       ?C?FTNPWR
+      00FF0980H   PUBLIC    CODE     ---       ?C?FTNPWR
+
+      ---         MODULE    ---      ---       ?C_START
+      00FF0000H   PUBLIC    CODE     ---       ?C?STARTUP
+      00FF0000H   PUBLIC    CODE     ---       ?C_STARTUP
+
+      ---         MODULE    ---      ---       ?C?INITEDATA
+      00FF0C08H   PUBLIC    CODE     ---       ?C?INITEDATA
+
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 20
+
+
+      ---         MODULE    ---      ---       ?C?SIDIV
+      00FF09B7H   PUBLIC    CODE     ---       ?C?SIDIV
+
+      ---         MODULE    ---      ---       ?C?LMUL
+      00FF09E9H   PUBLIC    CODE     ---       ?C?LMUL
+
+      ---         MODULE    ---      ---       ?C?LIMUL
+      00FF09FAH   PUBLIC    CODE     ---       ?C?LIMUL
+
+      ---         MODULE    ---      ---       ?C?ULDIV
+      00FF0A05H   PUBLIC    CODE     NEAR LAB  ?C?ULDIV
+      00FF0A03H   PUBLIC    CODE     NEAR LAB  ?C?ULIDIV
+
+      ---         MODULE    ---      ---       ?C?SLDIV
+      00FF0A56H   PUBLIC    CODE     NEAR LAB  ?C?SLDIV
+
+      ---         MODULE    ---      ---       ?C?BMOVENP
+      00FF0A8CH   PUBLIC    CODE     ---       ?C?BMOVENP
+      00FF0A8AH   PUBLIC    CODE     ---       ?C?BMOVENP8
+
+      ---         MODULE    ---      ---       memcpy
+      00FF0C34H   PUBLIC    CODE     ---       memcpy?_
+
+      ---         MODULE    ---      ---       memset
+      00FF0C59H   PUBLIC    CODE     ---       memset?_
+
+      ---         MODULE    ---      ---       malloc
+      00FF0B9AH   PUBLIC    CODE     ---       malloc
+
+      ---         MODULE    ---      ---       free
+      00FF0AAFH   PUBLIC    CODE     ---       free
+
+      ---         MODULE    ---      ---       ?C?INITEDATA_END
+      00FE0D54H   PUBLIC    HCONST   WORD      ?C?INITEDATA_END
+
+      ---         MODULE    ---      ---       mdefine
+      00000BEBH   PUBLIC    HDATA    ---       __mp__
+
+      ---         MODULE    ---      ---       ?L?COMMON
+      00FF000EH   LINE      ---      ---       #22
+      00FF0012H   LINE      ---      ---       #24
+      00FF0015H   LINE      ---      ---       #25
+      00FF0017H   LINE      ---      ---       #26
+      00FF2A61H   LINE      ---      ---       #19
+      00FF2A65H   LINE      ---      ---       #20
+      00FF2A65H   LINE      ---      ---       #22
+      00FF2A65H   LINE      ---      ---       #24
+      00FF2A65H   LINE      ---      ---       #27
+      00FF2A6BH   LINE      ---      ---       #28
+      00FF2A71H   LINE      ---      ---       #29
+      00FF2A78H   LINE      ---      ---       #30
+      00FF2A88H   LINE      ---      ---       #31
+      00FF2A94H   LINE      ---      ---       #32
+      00FF2AAAH   LINE      ---      ---       #33
+      00FF2AB6H   LINE      ---      ---       #34
+      00FF2AB8H   LINE      ---      ---       #35
+      00FF2ABCH   LINE      ---      ---       #36
+      00FF2ABEH   LINE      ---      ---       #37
+      00FF2ACEH   LINE      ---      ---       #38
+      00FF2AD4H   LINE      ---      ---       #39
+      00FF2AD4H   LINE      ---      ---       #40
+      00FF2AE9H   LINE      ---      ---       #41
+      00FF2AF4H   LINE      ---      ---       #42
+      00FF2B00H   LINE      ---      ---       #43
+      00FF2B06H   LINE      ---      ---       #44
+L251 LINKER/LOCATER V4.66.93.0                                                        09/26/2022  12:01:19  PAGE 21
+
+
+      00FF2B06H   LINE      ---      ---       #45
+      00FF2B10H   LINE      ---      ---       #46
+      00FF2B16H   LINE      ---      ---       #47
+      00FF2B29H   LINE      ---      ---       #48
+      00FF2B47H   LINE      ---      ---       #49
+      00FF2B5FH   LINE      ---      ---       #50
+      00FF2B61H   LINE      ---      ---       #51
+
+Program Size: data=8.1 edata+hdata=3046 xdata=0 const=4006 code=12130
+L251 RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,184 @@
+C251 COMPILER V5.60.0,  tm_stat                                                            26/09/22  11:58:46  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE tm_stat
+OBJECT MODULE PLACED IN .\Objects\tm_stat.obj
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE Sources\TinyMaix\tm_stat.c XSMALL HPTR OA FUNCTIONS(REENTRANT) INCDIR(
+                    -.\Sources\User;.\Sources\User\include;.\Sources\FreeRTOS\include;.\Sources\FreeRTOS\portable\STC32G12K128;.\Sources\Tiny
+                    -Maix) PRINT(.\Listings\tm_stat.lst) TABS(2) OBJECT(.\Objects\tm_stat.obj) 
+
+stmt  level    source
+
+    1          #include "tinymaix.h"
+    2          
+    3          #if TM_ENABLE_STAT==1
+    4          static const char* tml_str_tbl[TML_MAXCNT] = {
+    5              "Conv2D",   /*TML_CONV2D  = 0,*/
+    6              "GAP",      /*TML_GAP     = 1,*/
+    7              "FC",       /*TML_FC      = 2,*/
+    8              "Softmax",  /*TML_SOFTMAX = 3,*/
+    9              "Reshape",  /*TML_RESHAPE = 4,*/
+   10              "DWConv2D", /*TML_DWCONV2D= 5,*/
+   11          };
+   12          
+   13          static const int tml_headsize_tbl[TML_MAXCNT] = {
+   14              sizeof(tml_conv2d_dw_t),
+   15              sizeof(tml_gap_t),
+   16              sizeof(tml_fc_t),
+   17              sizeof(tml_softmax_t),
+   18              sizeof(tml_reshape_t),
+   19              sizeof(tml_conv2d_dw_t),
+   20          };
+   21          
+   22          
+   23          /*
+   24          0x4d, 0x41, 0x49, 0x58, 
+   25          0x00, 
+   26          0x01, 
+   27          0x01, 0x00, 
+   28          0x01, 0x00, 
+   29          0x06, 0x00, 
+   30          0xb8, 0x05, 0x00, 0x00,
+   31          typedef struct {
+   32            uint32_t magic;      //"MAIX"  0x4d, 0x41, 0x49, 0x58
+   33            uint8_t mdl_type;    // 0 int8, 1 int16, 2 fp32,
+   34            uint8_t out_deq;     // 0 don't dequant out; 1 dequant out
+   35            uint16_t input_cnt;  // only support 1 yet
+   36            uint16_t output_cnt; // only support 1 yet
+   37            uint16_t layer_cnt;
+   38            uint32_t buf_size;   // main buf size for middle result
+   39            uint32_t sub_size;   // sub buf size for middle result
+   40            uint16_t in_dims[4]; // 0:dims; 1:dim0; 2:dim1; 3:dim2
+   41            uint16_t out_dims[4];
+   42            uint8_t reserve[28];    // reserve for future
+   43            uint8_t layers_body[1]; // oft 64 here
+   44          } tm_mdlbin_t;
+   45          */
+   46          
+   47          tm_err_t tm_stat(tm_mdlbin_t* b)
+   48          {   
+   49   1          int layer_i;
+   50   1          int memout, ops;
+   51   1          uint16_t* odim = b->out_dims;
+   52   1          uint16_t* idim = b->in_dims;
+   53   1          int sum_param = 0;
+   54   1          int sum_ops   = 0;
+   55   1          char* tmp;
+   56   1          int i;
+   57   1          uint8_t*layer_body  = (uint8_t*)b->layers_body;
+C251 COMPILER V5.60.0,  tm_stat                                                            26/09/22  11:58:46  PAGE 2   
+
+   58   1      
+   59   1          
+   60   1          printf("================================ model stat ================================\n");
+   61   1          printf("mdl_type=%d (0 int8, 1 int16, 2 fp32)\n", b->mdl_type);
+   62   1          printf("out_deq=%d \n", b->out_deq);
+   63   1          printf("input_cnt=%d, output_cnt=%d, layer_cnt=%d\n", b->input_cnt, b->output_cnt, b->layer_cnt);
+   64   1          
+   65   1          printf("input %ddims: (%d, %d, %d)\n", idim[0],idim[1],idim[2],idim[3]);
+   66   1          
+   67   1          printf("output %ddims: (%d, %d, %d)\n", odim[0],odim[1],odim[2],odim[3]);
+   68   1          //printf("model param bin addr: 0x%x\n", (uint32_t)(b->layers_body));
+   69   1          printf("main buf size %d; sub buf size %d\n", \
+   70   1              b->buf_size,b->sub_size);
+   71   1      
+   72   1          printf("//Note: PARAM is layer param size, include align padding\r\n\r\n");
+   73   1          printf("Idx\tLayer\t         outshape\tinoft\toutoft\tPARAM\tMEMOUT OPS\n");
+   74   1          printf("---\tInput    \t%3d,%3d,%3d\t-   \t0    \t0 \t%ld \t0\n",\
+   75   1              idim[1],idim[2],idim[3], idim[1]*idim[2]*idim[3]*sizeof(mtype_t));
+   76   1          //      000  Input    -     224,224,3  0x40001234 0x40004000 100000 500000 200000
+   77   1          //printf("000  Input    -     %3d,%3d,%d  0x%08x   0x%08x     %6d %6d %6d\n",) 
+   78   1      
+   79   1          for(layer_i = 0; layer_i < b->layer_cnt; layer_i++){
+   80   2              tml_head_t* h = (tml_head_t*)(layer_body);
+   81   2              TM_DBG("body oft = %d\n", (uint32_t)h - (uint32_t)(b));
+   82   2              TM_DBG("type=%d, is_out=%d, size=%d, in_oft=%d, out_oft=%d, ",\
+   83   2                      h->type,h->is_out,h->sizes,h->in_oft,h->out_oft);
+   84   2              TM_DBG("in_dims=[%d,%d,%d,%d], out_dims=[%d,%d,%d,%d], in_s=%.3f, in_zp=%d, out_s=%.3f, out_zp=%d
+             -\n",\
+   85   2                            h->in_dims[0],h->in_dims[1],h->in_dims[2],h->in_dims[3],\
+   86   2                      h->out_dims[0],h->out_dims[1],h->out_dims[2],h->out_dims[3],\
+   87   2                      h->in_s,(int32_t)(h->in_zp),h->out_s,(int32_t)(h->out_zp));
+   88   2              if(h->type < TML_MAXCNT) {
+   89   3                  memout = h->out_dims[1]*h->out_dims[2]*h->out_dims[3];
+   90   3                  sum_param += (h->sizes - tml_headsize_tbl[h->type]);
+   91   3                  ops = 0;
+   92   3                  switch(h->type){
+   93   4                  case TML_CONV2D: {
+   94   5                      tml_conv2d_dw_t* l = (tml_conv2d_dw_t*)(layer_body);
+   95   5                      ops = memout*(l->kernel_w)*(l->kernel_h)*(h->in_dims[3]);   //MAC as ops
+   96   5                      TM_DBG("Conv2d: kw=%d, kh=%d, sw=%d, sh=%d, dw=%d, dh=%d, act=%d, pad=[%d,%d,%d,%d], dmul
+             -=%d, ws_oft=%d, w_oft=%d, b_oft=%d\n",\
+   97   5                          l->kernel_w, l->kernel_h, l->stride_w, l->stride_h, l->dilation_w, l->dilation_h, \
+   98   5                          l->act, l->pad[0], l->pad[1], l->pad[2], l->pad[3], l->depth_mul, \
+   99   5                          l->ws_oft, l->w_oft, l->b_oft);
+  100   5                      break;}
+  101   4                  case TML_GAP:
+  102   4                      ops = (h->in_dims[1])*(h->in_dims[2])*(h->in_dims[3]);  //SUM as ops
+  103   4                      break;
+  104   4                  case TML_FC: {
+  105   5                      tml_fc_t* l = (tml_fc_t*)(layer_body);
+  106   5                      ops = (h->out_dims[3])*(h->in_dims[3]);         //MAC as ops
+  107   5                      TM_DBG("FC: ws_oft=%d, w_oft=%d, b_oft=%d\n",\
+  108   5                          l->ws_oft, l->w_oft, l->b_oft);
+  109   5                      break;}
+  110   4                  case TML_SOFTMAX:
+  111   4                      ops = 6*(h->out_dims[3]);                       //mixed
+  112   4                      break;
+  113   4                  case TML_DWCONV2D: {
+  114   5                      tml_conv2d_dw_t* l = (tml_conv2d_dw_t*)(layer_body);
+  115   5                      ops = memout*(l->kernel_w)*(l->kernel_h)*1;   //MAC as ops
+  116   5                      TM_DBG("DWConv2d: kw=%d, kh=%d, sw=%d, sh=%d, dw=%d, dh=%d, act=%d, pad=[%d,%d,%d,%d], dm
+             -ul=%d, ws_oft=%d, w_oft=%d, b_oft=%d\n",\
+  117   5                          l->kernel_w, l->kernel_h, l->stride_w, l->stride_h, l->dilation_w, l->dilation_h, \
+  118   5                          l->act, l->pad[0], l->pad[1], l->pad[2], l->pad[3], l->depth_mul,\
+  119   5                          l->ws_oft, l->w_oft, l->b_oft);
+  120   5                      break;}
+C251 COMPILER V5.60.0,  tm_stat                                                            26/09/22  11:58:46  PAGE 3   
+
+  121   4                  default:
+  122   4                      ops = 0;
+  123   4                      break;
+  124   4                  }
+  125   3                  sum_ops += ops;
+  126   3                  printf("%03d\t%s      \t%3d,%3d,%3d\t%d\t%d\t%d\t%ld\t", layer_i, tml_str_tbl[h->type], \
+  127   3                      h->out_dims[1], h->out_dims[2], h->out_dims[3], \
+  128   3                      h->in_oft, h->out_oft, h->sizes - tml_headsize_tbl[h->type], \
+  129   3                      memout*sizeof(mtype_t));
+  130   3                  printf("%d\r\n", ops);
+  131   3              } else {
+  132   3                  return TM_ERR_LAYERTYPE;
+  133   3              }
+  134   2              layer_body += (h->sizes);
+  135   2          }
+  136   1          printf("\r\nTotal param ~%.1f KB, OPS ~%.2f MOPS, buffer %.1f KB\r\n\r\n", \
+  137   1              sum_param/1024.0, sum_ops/1000000.0, (b->buf_size + b->sub_size)/1024.0);
+  138   1          return TM_OK;
+  139   1      } 
+  140          
+  141          
+  142          #endif
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      1059     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =        24     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =       616     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

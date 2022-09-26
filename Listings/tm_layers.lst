@@ -1,0 +1,421 @@
+C251 COMPILER V5.60.0,  tm_layers                                                          26/09/22  11:58:46  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE tm_layers
+OBJECT MODULE PLACED IN .\Objects\tm_layers.obj
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE Sources\TinyMaix\tm_layers.c XSMALL HPTR OA FUNCTIONS(REENTRANT) INCDI
+                    -R(.\Sources\User;.\Sources\User\include;.\Sources\FreeRTOS\include;.\Sources\FreeRTOS\portable\STC32G12K128;.\Sources\Ti
+                    -nyMaix) PRINT(.\Listings\tm_layers.lst) TABS(2) OBJECT(.\Objects\tm_layers.obj) 
+
+stmt  level    source
+
+    1          /* Copyright 2022 Sipeed Technology Co., Ltd. All Rights Reserved.
+    2          Licensed under the Apache License, Version 2.0 (the "License");
+    3          you may not use this file except in compliance with the License.
+    4          You may obtain a copy of the License at
+    5              http://www.apache.org/licenses/LICENSE-2.0
+    6          Unless required by applicable law or agreed to in writing, software
+    7          distributed under the License is distributed on an "AS IS" BASIS,
+    8          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    9          See the License for the specific language governing permissions and
+   10          limitations under the License.
+   11          ==============================================================================*/
+   12          // It is default O0 implement
+   13          #include "float.h"
+   14          #include "math.h"
+   15          #include "tinymaix.h"
+   16          
+   17          #if TM_OPT_LEVEL == TM_OPT0
+   18          
+   19          #include "arch_cpu.h"
+   20          static uint32_t k_oft[TM_MAX_KSIZE];
+   21          static mtype_t sbuf[TM_MAX_KCSIZE];
+   22          
+   23          #if (TM_MDL_TYPE == TM_MDL_FP32) || (TM_MDL_TYPE == TM_MDL_FP16)
+               #define SUMSCALE 1.0
+               TM_INLINE void l_postprocess_sum(sumtype_t sum, btype_t b, int act,
+                                                mtype_t *outp, sctype_t scale, sctype_t out_s,
+                                                zptype_t out_zp) {
+                 sum += b;
+                 switch (act) { // activation func
+                 case TM_ACT_RELU:
+                   sum = sum > 0 ? sum : 0;
+                   break;
+                 case TM_ACT_RELU6:
+                   sum = sum > 0 ? sum : 0;
+                   sum = sum > 6 ? 6 : sum;
+                   break;
+                 default:
+                   break;
+                 }
+                 *outp = (mtype_t)sum;
+                 return;
+               }
+               #elif (TM_MDL_TYPE == TM_MDL_INT8) || (TM_MDL_TYPE == TM_MDL_INT16)
+   44          
+   45          #if TM_FASTSCALE
+               static int32_t sumscale[TM_MAX_CSIZE];
+               #else
+   48          static float sumscale[TM_MAX_CSIZE];
+   49          #endif
+   50          #define SUMSCALE (sumscale[c])
+   51          
+   52          #if !TM_FASTSCALE
+   53          TM_INLINE void l_postprocess_sum(sumtype_t sum, btype_t b, int act,
+   54                                           mtype_t *outp, sctype_t scale, sctype_t out_s,
+   55                                           zptype_t out_zp)
+   56          #else
+               TM_INLINE void l_postprocess_sum(sumtype_t sum, btype_t b, int act,
+C251 COMPILER V5.60.0,  tm_layers                                                          26/09/22  11:58:46  PAGE 2   
+
+                                                mtype_t *outp, int32_t scale, int32_t out_s,
+                                                zptype_t out_zp)
+               #endif
+   61          {
+   62   1      #if !TM_FASTSCALE
+   63   1        float sumf;
+   64   1      #else
+                 sumtype_t sumf;
+               #endif
+   67   1        sum += b;
+   68   1      #if !TM_FASTSCALE
+   69   1        sumf = sum * scale;
+   70   1      #else
+                 sumf = (sum << TM_FASTSCALE_SHIFT) / scale;
+               #endif
+   73   1      
+   74   1        switch (act) { // activation func
+   75   2        case TM_ACT_RELU:
+   76   2          sumf = sumf > 0 ? sumf : 0;
+   77   2          break;
+   78   2        case TM_ACT_RELU6:
+   79   2          sumf = sumf > 0 ? sumf : 0;
+   80   2      #if (!TM_FASTSCALE)
+   81   2          sumf = sumf > 6 ? 6 : sumf;
+   82   2      #else
+                   sumf = sumf > (6 << TM_FASTSCALE_SHIFT) ? (6 << TM_FASTSCALE_SHIFT) : sumf;
+               #endif
+   85   2          break;
+   86   2        default:
+   87   2          break;
+   88   2        }
+   89   1      #if !TM_FASTSCALE
+   90   1        *outp = (mtype_t)(sumf / out_s +
+   91   1                          out_zp); //(mtype_t)((int)(sumf/out_s) + out_zp)
+   92   1                                   ////(mtype_t)((int)(sumf/out_s +0.5) + out_zp)
+   93   1      #else
+                 *outp = (mtype_t)(
+                     ((sumf * out_s) >> (TM_FASTSCALE_SHIFT + TM_FASTSCALE_SHIFT)) + out_zp);
+               #endif
+   97   1        return;
+   98   1      }
+   99          #endif
+  100          
+  101          #define BATCH_SIZE 2
+  102          // for valid or kernel in valid part, use fast method
+  103          tm_err_t TM_WEAK tml_conv2d_dwconv2d(
+  104              tm_mat_t *in, tm_mat_t *out, wtype_t *w, btype_t *b, int kw, int kh, int sx,
+  105              int sy, int dx, int dy, int act, int pad_top, int pad_bottom, int pad_left,
+  106              int pad_right, int dmul, sctype_t *ws, sctype_t in_s, zptype_t in_zp,
+  107              sctype_t out_s, zptype_t out_zp) // kernel: (cho, chi, h, w)
+  108          {
+  109   1        int pad_flag;
+  110   1        int maxk;
+  111   1        int chi;
+  112   1        int cho;
+  113   1        sumtype_t sum;
+  114   1        mtype_t *sptr;
+  115   1        mtype_t *outp;
+  116   1      
+  117   1        int x, y, c, cc, k, oft, idx, slow_flag, _ky, _kx,i;
+  118   1        sumtype_t sums[BATCH_SIZE];
+  119   1      #if TM_FASTSCALE
+                 int32_t outscale;
+               #else
+  122   1        sctype_t outscale;
+  123   1      #endif
+C251 COMPILER V5.60.0,  tm_layers                                                          26/09/22  11:58:46  PAGE 3   
+
+  124   1      
+  125   1        if (dx != 1 || dy != 1)
+  126   1          return TM_ERR_TODO;
+  127   1      
+  128   1        if (act >= TM_ACT_MAXCNT) {
+  129   2          return TM_ERR_UNSUPPORT;
+  130   2        }
+  131   1      
+  132   1        maxk = kw * kh;
+  133   1        if (maxk > TM_MAX_KSIZE)
+  134   1          return TM_ERR_KSIZE;
+  135   1        if (maxk == 1 && (pad_flag || dmul)) {
+  136   2          return TM_ERR_UNSUPPORT;
+  137   2        }
+  138   1      
+  139   1        chi = in->c;
+  140   1        cho = out->c;
+  141   1        sum = 0;
+  142   1        outp = out->dat;
+  143   1        pad_flag =
+  144   1            (pad_top != 0 || pad_bottom != 0 || pad_left != 0 || pad_right != 0);
+  145   1      
+  146   1      #if (TM_MDL_TYPE == TM_MDL_INT8) || (TM_MDL_TYPE == TM_MDL_INT16)
+  147   1      #if TM_FASTSCALE
+                 outscale = (1<<TM_FASTSCALE_SHIFT)/out_s;
+                 for(c=0; c<out->c;c++) sumscale[c]=1.0/ws[c]/in_s;
+               #else
+  151   1        outscale = out_s;
+  152   1        for(c=0; c<out->c;c++) sumscale[c]=ws[c]*in_s;
+  153   1      #endif
+  154   1      #else
+                 outscale = out_s;
+               #endif
+  157   1        
+  158   1        
+  159   1        if (maxk == 1) {
+  160   2          for (y = 0; y < out->h; y++) {
+  161   3            for (x = 0; x < out->w; x++) {
+  162   4              mtype_t *sptr = (mtype_t *)TM_MATP(in, sy * y, sx * x, 0);
+  163   4              wtype_t *kptr = (wtype_t *)w;
+  164   4              c = 0;
+  165   4              for (; c < out->c - BATCH_SIZE + 1;) {
+  166   5                tm_dot_prod_pack2(sptr, kptr, chi, sums);
+  167   5                l_postprocess_sum(sums[0], b[c], act, outp, SUMSCALE, outscale,
+  168   5                                  out_zp);
+  169   5                c++;
+  170   5                outp++;
+  171   5                l_postprocess_sum(sums[1], b[c], act, outp, SUMSCALE, outscale,
+  172   5                                  out_zp);
+  173   5                c++;
+  174   5                outp++;
+  175   5                kptr += chi * BATCH_SIZE; //*2;
+  176   5              }
+  177   4              for (; c < out->c; c++) {
+  178   5                tm_dot_prod(sptr, kptr, chi, &sum); // size=maxk*chi //pw maxk==1
+  179   5                l_postprocess_sum(sum, b[c], act, outp, SUMSCALE, outscale, out_zp);
+  180   5                outp++;
+  181   5                kptr += chi;
+  182   5              }
+  183   4            }
+  184   3          }
+  185   2          TM_PERF_ADD(t_pwconv);
+  186   2          return TM_OK;
+  187   2        }
+  188   1      
+  189   1        if (dmul) {
+C251 COMPILER V5.60.0,  tm_layers                                                          26/09/22  11:58:46  PAGE 4   
+
+  190   2          TM_PERF_START(t_dwconv);
+  191   2        } else {
+  192   2          TM_PERF_START(t_conv);
+  193   2        };
+  194   1        oft = 0;
+  195   1        idx = 0;
+  196   1        for (y = 0; y < kh; y++) { // gen k_oft table
+  197   2          for (x = 0; x < kw; x++) {
+  198   3            k_oft[idx] = oft;
+  199   3            idx += 1;
+  200   3            oft += chi;
+  201   3          }
+  202   2          oft += (in->w - kw) * chi;
+  203   2        }
+  204   1      
+  205   1        chi = dmul ? 1 : in->c; // dmul>=1 indicate depthwise; dummy chi for dwconv
+  206   1                                // compatible
+  207   1        slow_flag = 0;          // same pad part is slow
+  208   1        for (y = 0; y < out->h; y++) {
+  209   2          int src_y0 = sy * y - pad_top;
+  210   2          for (x = 0; x < out->w; x++) {
+  211   3            int src_x0 = sx * x - pad_left;
+  212   3            sumtype_t sum;
+  213   3            slow_flag = ((src_y0 < 0) + (src_x0 < 0) + (src_y0 + kh > in->h) +
+  214   3                         (src_x0 + kw > in->w));
+  215   3            // TM_PERF_START(t_sbuf);
+  216   3            if (!slow_flag) { // valid or same valid part
+  217   4              mtype_t *sptr_base =
+  218   4                  (mtype_t *)TM_MATP(in, src_y0, src_x0, 0); //?c/dmul:0
+  219   4              mtype_t *sptr =
+  220   4                  sptr_base; //= (mtype_t*)TM_MATP(in, src_y0, src_x0, 0); //sbuf 不变
+  221   4              uint32_t sidx = 0; // sbuf:cho,chi,maxk //dw:chi==1;
+  222   4              for (cc = 0; cc < (dmul ? cho : chi); cc++) {
+  223   5                for (k = 0; k < maxk; k++) {
+  224   6                  sbuf[sidx + k] = sptr[k_oft[k]];
+  225   6                }
+  226   5                sidx += maxk;
+  227   5                sptr = sptr_base + (dmul ? (cc + 1) / dmul : (cc + 1));
+  228   5              }
+  229   4            } else { // same pad part
+  230   4              int _ky0 = src_y0 < 0 ? -src_y0 : 0;
+  231   4              int _kx0 = src_x0 < 0 ? -src_x0 : 0;
+  232   4              int _ky1 = in->h - src_y0 > kh ? kh : in->h - src_y0;
+  233   4              int _kx1 = in->w - src_x0 > kw ? kw : in->w - src_x0;
+  234   4              uint32_t sidx = 0; // sbuf:cho,chi,maxk //dw:chi==1;
+  235   4              uint32_t s_step = (_ky1 - _ky0) * (_kx1 - _kx0);
+  236   4              mtype_t *sptr_base = (mtype_t *)TM_MATP(in, src_y0, src_x0, 0);
+  237   4              mtype_t *sptr = sptr_base;
+  238   4              memset(sbuf, (char)in_zp, dmul ? cho * maxk : chi * maxk); // do padding
+  239   4              for (cc = 0; cc < (dmul ? cho : chi); cc++) {
+  240   5                for (_ky = _ky0; _ky < _ky1; _ky++) {
+  241   6                  for (_kx = _kx0; _kx < _kx1; _kx++) {
+  242   7                    int k = _ky * kw + _kx;
+  243   7                    sbuf[sidx + k] = sptr[k_oft[k]];
+  244   7                  }
+  245   6                }
+  246   5                sidx += maxk;
+  247   5                sptr = sptr_base + (dmul ? (cc + 1) / dmul : (cc + 1));
+  248   5              }
+  249   4            }
+  250   3            sptr = sbuf;                   // sbuf prepare ok~
+  251   3            if (maxk * chi == 9 && dmul) { // simple opt for 3x3 dwconv
+  252   4              for (c = 0; c < out->c; c++) {
+  253   5                wtype_t *kptr =
+  254   5                    (wtype_t *)w + c * chi * maxk; // TM_PERF_START(t_dotp);
+  255   5                tm_dot_prod_3x3x1(sptr, kptr,
+C251 COMPILER V5.60.0,  tm_layers                                                          26/09/22  11:58:46  PAGE 5   
+
+  256   5                                  &sum); // TM_PERF_ADD(t_dotp);TM_PERF_START(t_post);
+  257   5                l_postprocess_sum(sum, b[c], act, outp, SUMSCALE, outscale, out_zp);
+  258   5                outp++;       // TM_PERF_ADD(t_post);
+  259   5                sptr += maxk; // dwconv need move step
+  260   5              }
+  261   4            } else {
+  262   4              for (c = 0; c < out->c; c++) {
+  263   5                wtype_t *kptr =
+  264   5                    (wtype_t *)w + c * chi * maxk; // TM_PERF_START(t_dotp);
+  265   5                tm_dot_prod(sptr, kptr, maxk * chi,
+  266   5                            &sum); // TM_PERF_ADD(t_dotp);TM_PERF_START(t_post);
+  267   5                l_postprocess_sum(sum, b[c], act, outp, SUMSCALE, outscale, out_zp);
+  268   5                outp++; // TM_PERF_ADD(t_post);
+  269   5                if (dmul)
+  270   5                  sptr += maxk; // dwconv need move step
+  271   5              }
+  272   4            }
+  273   3            if (!slow_flag) {
+  274   4              TM_PERF_ADD(t_valid);
+  275   4            } else {
+  276   4              TM_PERF_ADD(t_pad);
+  277   4            }
+  278   3          }
+  279   2        }
+  280   1        if (dmul) {
+  281   2          TM_PERF_ADD(t_dwconv);
+  282   2        } else {
+  283   2          TM_PERF_ADD(t_conv);
+  284   2        };
+  285   1        return TM_OK;
+  286   1      }
+  287          
+  288          /*************************** TML_GAP **********************************/
+  289          tm_err_t TM_WEAK tml_gap(tm_mat_t *in, tm_mat_t *out, sctype_t in_s,
+  290                                   zptype_t in_zp, sctype_t out_s, zptype_t out_zp) {
+  291   1        mtype_t *dat;
+  292   1        int c, y, x;
+  293   1        for (c = 0; c < out->c; c++) {
+  294   2          sumtype_t sum = 0;
+  295   2          dat = in->dat + c;
+  296   2          for (y = 0; y < in->h; y++) {
+  297   3            for (x = 0; x < in->w; x++) {
+  298   4              sum += ((sumtype_t)(*dat));
+  299   4              dat += out->c;
+  300   4            }
+  301   3          }
+  302   2      #if TM_MDL_TYPE == TM_MDL_INT8 || TM_MDL_TYPE == TM_MDL_INT16
+  303   2          out->dat[c] = (mtype_t)((sum / ((in->h) * (in->w)) - in_zp) * in_s / out_s +
+  304   2                                  out_zp); // requant
+  305   2      #elif TM_MDL_TYPE == TM_MDL_FP32 || TM_MDL_TYPE == TM_MDL_FP16
+                   out->dat[c] = (mtype_t)(sum / ((in->h) * (in->w)));
+               //#else //#elif TM_MDL_TYPE == TM_MDL_FP8_143 || TM_MDL_TYPE == TM_MDL_FP8_152
+               #endif
+  309   2        }
+  310   1        return TM_OK;
+  311   1      }
+  312          
+  313          /*************************** TML_FC **********************************/
+  314          tm_err_t TM_WEAK tml_fc(tm_mat_t *in, tm_mat_t *out, wtype_t *w, btype_t *b,
+  315                                  sctype_t *ws, sctype_t in_s, zptype_t in_zp,
+  316                                  sctype_t out_s, zptype_t out_zp) {
+  317   1        mtype_t *dat = in->dat;
+  318   1        int c;
+  319   1        for (c = 0; c < out->c; c++) {
+  320   2          sumtype_t sum = 0;
+  321   2          tm_dot_prod(dat, w + c * in->c, in->c, &sum);
+C251 COMPILER V5.60.0,  tm_layers                                                          26/09/22  11:58:46  PAGE 6   
+
+  322   2          sum += b[c]; // fuse with zp
+  323   2      #if TM_MDL_TYPE == TM_MDL_INT8 || TM_MDL_TYPE == TM_MDL_INT16
+  324   2          out->dat[c] = (mtype_t)(sum * in_s * ws[0] / out_s + out_zp); // requant
+  325   2      #else
+                   out->dat[c] = (mtype_t)(sum);
+               #endif
+  328   2        }
+  329   1        return TM_OK;
+  330   1      }
+  331          
+  332          /*************************** TML_SOFTMAX **********************************/
+  333          tm_err_t TM_WEAK tml_softmax(
+  334              tm_mat_t *in, tm_mat_t *out, sctype_t in_s, zptype_t in_zp, sctype_t out_s,
+  335              zptype_t out_zp) { // TM_DBGT_INIT(); //note we have float size output buf
+  336   1                             // even in INT8/INT16 mode
+  337   1        int c;
+  338   1        mtype_t *din = in->dat;
+  339   1        float *dout = (float *)(out->dat);
+  340   1        float dmax = -FLT_MAX;
+  341   1        float sum = 0;
+  342   1        for (c = 0; c < in->c; c++) {
+  343   2      #if TM_MDL_TYPE == TM_MDL_INT8 || TM_MDL_TYPE == TM_MDL_INT16
+  344   2          dout[c] = (float)((sumtype_t)din[c] - in_zp) * in_s;
+  345   2      #else
+                   dout[c] = din[c];
+               #endif
+  348   2          if (dout[c] > dmax)
+  349   2            dmax = dout[c];
+  350   2        }
+  351   1      
+  352   1        for (c = 0; c < in->c; c++) {
+  353   2          dout[c] -= dmax;
+  354   2          dout[c] = (float)tm_exp(dout[c]);
+  355   2          sum += dout[c];
+  356   2          dout[c] -= 0.000001; // prevent 1.0 value (cause 256 overflow)
+  357   2        }
+  358   1        for (c = 0; c < in->c; c++) { // int8/int16 <= fp32, so it is ok
+  359   2      #if TM_MDL_TYPE == TM_MDL_INT8 || TM_MDL_TYPE == TM_MDL_INT16
+  360   2          out->dat[c] = (mtype_t)(dout[c] / sum / out_s + out_zp); // requant
+  361   2      #else
+                   out->dat[c] = (mtype_t)(dout[c] / sum);
+               #endif
+  364   2        }
+  365   1        return TM_OK;
+  366   1      }
+  367          
+  368          /*************************** TML_RESHAPE **********************************/
+  369          tm_err_t TM_WEAK tml_reshape(tm_mat_t *in, tm_mat_t *out, sctype_t in_s,
+  370                                       zptype_t in_zp, sctype_t out_s, zptype_t out_zp) {
+  371   1        return TM_OK;
+  372   1      }
+  373          
+  374          #endif
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      5569     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =       452     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+C251 COMPILER V5.60.0,  tm_layers                                                          26/09/22  11:58:46  PAGE 7   
+
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
